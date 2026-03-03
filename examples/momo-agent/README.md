@@ -38,12 +38,14 @@ mkdir -p ~/.openclaw/workspace-momo/memory
 | HEARTBEAT.md | 心跳检查项 | 按需调整 |
 | IDENTITY.md | 身份标识 | 可选修改 |
 
-## 内置 Skills
+## 推荐 Skills
 
-| Skill | 用途 |
-|-------|------|
-| **delegate-agent** | 异步任务派发（10s 超时 + 心跳跟进） |
-| **agent-comm** | 跨 Agent 通信（sessions_send/list/history） |
+以下 skills 位于项目根目录 `skills/`，部署时复制到 workspace 或配置为全局 skill：
+
+| Skill | 位置 | 用途 |
+|-------|------|------|
+| **delegate-agent** | `skills/delegate-agent/` | 异步任务派发（10s 超时 + 心跳跟进） |
+| **agent-comm** | `skills/agent-comm/` | 跨 Agent 通信（sessions_send/list/history） |
 
 ## 权限配置
 

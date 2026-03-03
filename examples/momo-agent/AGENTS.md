@@ -29,8 +29,6 @@
 
 ## Git 推送规范
 
-- 禁止直推 main/master
-- feature 分支 → PR → 用户确认后 merge
-- **push 前必须 rebase main**
-- push 前确认：功能描述 + 脱敏检查
-- 善用 `commit --amend`
+- 禁止直推 main/master，走 feature 分支 + PR
+- push 前：rebase main → 脱敏检查 → 用户确认
+- 详细规范见 `09-best-practices.md` Git 章节
