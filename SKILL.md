@@ -52,3 +52,19 @@ exec("python3 scripts/create_agent.py --agent-id xxx --role xxx ...")
 3. **修改 openclaw.json 必须包含所有 Agent** — agents.list 是整体替换，遗漏 = 丢失
 4. **创建群聊后必须注册** — 加 binding + groups 配置 + 重启 gateway
 5. **Bot 创建的文档必须授权** — 否则用户看不到
+
+## 🔧 项目维护（仅供维护者）
+
+**如果你要修改项目本身（如添加新 Agent、修改配置格式、更新文档），必须先阅读：**
+
+```
+read("skills/maintenance/SKILL.md")
+read("skills/maintenance/references/project-maintenance.md")
+```
+
+⚠️ **开发原则**（强制遵守）：
+- 强制脱敏：模型 ID、内部事故记录、真实路径、API Key 等均为敏感信息，示例中用占位符
+- 内容通用性：开源内容面向所有用户，不包含特定团队的内部信息
+- 提交前必须运行脱敏检查：`python3 scripts/check_sensitive.py`
+
+违反原则的提交将被拒绝合并。

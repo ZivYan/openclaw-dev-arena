@@ -14,6 +14,9 @@
 - ❌ TOKEN / API Key / Secret（即使是示例也要用占位符）
 - ❌ 内部群聊 ID（oc_xxx）
 - ❌ 服务器 IP、内网域名
+- ❌ **具体模型 ID**（如 `provider/model-name`、匿名代号等，示例中用 `<provider/model_id>` 占位）
+- ❌ **内部事故记录**（具体日期、事故细节属于内部运维信息）
+- ❌ **内部 Agent 名称用于非示例场景**（示例中用 `<agent_id>` 占位，教程中的通用角色名如 coder/trader 可保留）
 
 **脱敏检查脚本**（必须运行）：
 ```bash
@@ -30,14 +33,32 @@ python3 scripts/check_sensitive.py --path . --strict
 "workspace": "/Users/username/.openclaw/workspace-coder"
 "appSecret": "cli_xxxxxxxxxxxxxxxx"
 "chat_id": "oc_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+"primary": "provider/actual-model-name"
 
 # ✅ 正确
 "workspace": "/path/to/.openclaw/workspace-coder"
 "appSecret": "__OPENCLAW_REDACTED__"
 "chat_id": "oc_xxxxxxxxxxxxxxxx"
+"primary": "<provider/model_id>"
+
+# ❌ 错误 — 内部事故记录
+| 2026-02-27 | 丢失所有 Agent 配置 | config.patch 整体替换 |
+
+# ✅ 正确 — 描述通用风险而非具体事故
+"config.patch 对数组执行整体替换，未列出的条目会丢失"
 ```
 
-### 2. 一致性优先
+### 2. 内容通用性 🌐
+
+开源项目的所有内容必须**面向通用用户**，不能包含特定团队的内部信息：
+
+- **用占位符替代真实值**：路径用 `<workspace_path>`，模型用 `<provider/model_id>`，Agent 用 `<agent_id>`
+- **描述通用风险而非具体事故**：用"config.patch 对数组整体替换可能导致数据丢失"，不要写"2026-02-27 丢失了所有 Agent"
+- **教程角色名可保留**：coder、trader、scout 等作为示例角色是通用的，但不要暴露真实 Agent 的具体配置
+- **Skill 要面向所有 OpenClaw 用户**：不假设用户使用特定模型、特定 provider 或特定 Agent 架构
+- **自查清单**：写完后问自己"一个完全不了解我们团队的开发者，看到这个内容会觉得奇怪吗？"
+
+### 3. 一致性优先
 
 所有文档、脚本、示例必须遵循统一规范，避免不同模型产生不同理解：
 
@@ -45,7 +66,7 @@ python3 scripts/check_sensitive.py --path . --strict
 - **使用明确命令**：不要用"运行脚本"，用 `python3 scripts/create_agent.py ...`
 - **使用确定性格式**：JSON 字段必须完整，不要省略可选字段
 
-### 2. 代码优于自然语言
+### 4. 代码优于自然语言
 
 当指令可能产生歧义时，优先使用代码/脚本：
 
@@ -55,7 +76,7 @@ python3 scripts/check_sensitive.py --path . --strict
 | "更新群聊配置" | `config['channels']['feishu']['groups'][chat_id] = {"enabled": True}` |
 | "修改模型配置" | 见下方 Python 脚本 |
 
-### 3. 可验证性
+### 5. 可验证性
 
 所有更新必须通过自动化检查：
 

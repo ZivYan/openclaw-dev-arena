@@ -18,6 +18,18 @@
 - 想用飞书作为 AI Agent 交互界面的团队
 - 需要多 Agent 协作系统的个人
 
+## ⚠️ 项目维护（重要）
+
+**如果你要修改这个项目本身（如添加新 Agent、修改配置格式、更新文档），必须先阅读：**
+
+- `skills/maintenance/SKILL.md` — 维护指南入口
+- `skills/maintenance/references/project-maintenance.md` — 详细开发原则
+
+**强制要求：**
+- 脱敏：模型 ID、内部事故记录、真实路径、API Key 等均为敏感信息，示例中用占位符
+- 通用性：开源内容面向所有用户，不包含特定团队的内部信息
+- 提交前运行：`python3 scripts/check_sensitive.py`
+
 ## 目录结构
 
 ```
