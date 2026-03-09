@@ -42,12 +42,12 @@ OpenClaw 按以下顺序扫描 Skill：
 │       └── project-switcher/        # 项目切换（仅 coder）
 │           └── SKILL.md
 │
-├── workspace-butler/                # butler agent workspace
+├── workspace-writer/                # writer agent workspace
 │   └── skills/
-│       ├── apple-notes/             # Apple Notes（仅 butler）
-│       └── apple-reminders/         # Apple Reminders（仅 butler）
+│       ├── style-guide/             # 写作风格规范（仅 writer）
+│       └── doc-outline/             # 文档大纲模板（仅 writer）
 │
-└── workspace-assistant/            # 用户B的专属 agent workspace
+└── workspace-analyst/              # analyst agent workspace
     └── skills/
         └── agent-comm/              # 跨 Agent 通信（复制一份）
             └── SKILL.md
@@ -70,7 +70,7 @@ OpenClaw 按以下顺序扫描 Skill：
 
 - `delegate-coder` — 仅协调者用（委派编码任务）
 - `project-switcher` — 仅 coder 用（切换项目目录）
-- `apple-notes` / `apple-reminders` — 仅 butler 用（macOS 专属）
+- `style-guide` / `doc-outline` — 仅 writer 用（文档写作）
 - `agent-comm` — 仅需要跨 Agent 通信的 Agent
 
 ### 判断标准
@@ -87,8 +87,8 @@ OpenClaw 按以下顺序扫描 Skill：
 
 ```
 workspace-coder/references/feishu-message-format.md    # 副本1
-workspace-trader/references/feishu-message-format.md   # 副本2
-workspace-scout/references/feishu-message-format.md    # 副本3
+workspace-writer/references/feishu-message-format.md   # 副本2
+workspace-analyst/references/feishu-message-format.md  # 副本3
 ...
 ```
 

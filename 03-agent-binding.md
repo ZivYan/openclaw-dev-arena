@@ -88,7 +88,7 @@ OpenClaw 通过 `bindings` 配置将飞书的群聊/私信路由到不同的 Age
 
 ```json
 {
-  "agentId": "trader",
+  "agentId": "coder",
   "match": {
     "channel": "feishu",
     "accountId": "default",
@@ -124,8 +124,8 @@ OpenClaw 通过 `bindings` 配置将飞书的群聊/私信路由到不同的 Age
 ~/.openclaw/
 ├── workspace-momo/     # 协调者 agent (MOMO)
 ├── workspace-coder/    # coder agent
-├── workspace-trader/   # trader agent
-└── workspace-scout/    # scout agent
+├── workspace-writer/   # writer agent
+└── workspace-analyst/  # analyst agent
 ```
 
 Workspace 中的关键文件：

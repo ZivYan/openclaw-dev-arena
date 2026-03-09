@@ -20,7 +20,7 @@
 
 1. **飞书凭证**：App ID、App Secret、Bot 名称
 2. **用户 open_id**（不知道则先给 Bot 发私信，从日志获取）
-3. **Agent 列表**：预设（coder/trader/scout/tutor/butler）或自定义
+3. **Agent 列表**：预设（coder/writer/analyst/open-source）或自定义
 4. **功能需求**：Agent 间通信、飞书文档、群聊管理、定时任务、搜索
 
 ## Step 2: 申请飞书权限
@@ -86,10 +86,8 @@ openclaw gateway restart
 | 预设 | 工具权限 | 场景 |
 |------|---------|------|
 | coder | exec, read, write, edit, browser | 开发、调试 |
-| trader | exec, read, write, edit, cron | 交易、监控 |
-| scout | read, web_search（只读） | 搜索、情报 |
-| tutor | read, web_search（只读） | 学习辅导 |
-| butler | exec, read, cron, browser | 日程、生活 |
+| writer | read, web_search, feishu_doc, feishu_perm | 文档、写作 |
+| analyst | exec, read, write, web_search | 分析、总结 |
 
 所有预设自动包含：`message`, `web_fetch`, `session_status`。
 

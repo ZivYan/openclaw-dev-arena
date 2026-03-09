@@ -7,14 +7,12 @@
 ```
 飞书 Bot (一个应用)
     │
-    ├── 群聊 A → Agent: trader (交易助手)
-    ├── 群聊 B → Agent: coder  (开发助手)
-    ├── 群聊 C → Agent: scout  (情报助手)
-    ├── 群聊 D → Agent: tutor  (学习助手)
-    ├── 群聊 E → Agent: butler (生活助手)
+    ├── 群聊 A → Agent: coder   (开发助手)
+    ├── 群聊 B → Agent: writer  (写作助手)
+    ├── 群聊 C → Agent: analyst (分析助手)
     │
     ├── DM 用户 A → Agent: main   (主助手)
-    └── DM 用户 B → Agent: user-assistant  (用户B的专属助手)
+    └── DM 用户 B → Agent: user-b  (用户B的专属助手)
 ```
 
 ## 关键概念
@@ -43,7 +41,7 @@ Session Key 格式：`agent:{agent_id}:{channel}:{peer_kind}:{peer_id}`
 Agent 之间通过 `sessions_send` 工具通信：
 
 ```
-Agent A (trader) ──sessions_send──► Agent B (coder)
+Agent A (main) ──sessions_send──► Agent B (coder)
                                         │
                                     处理任务
                                         │
@@ -55,7 +53,7 @@ Agent A (trader) ──sessions_send──► Agent B (coder)
 每个 Agent 可以配置独立的工具白名单/黑名单：
 
 - 协调者 Agent（如 MOMO）: 拥有所有权限（gateway、browser、cron...）
-- 只读 Agent（如 scout）: 仅 read、web_search、message
+- 文档 Agent（如 writer）: read、message、web_search、feishu_doc
 - 编码 Agent（如 coder）: exec、read、write、edit
 - 跨 Agent 通信: sessions_list、sessions_history、sessions_send
 
@@ -94,9 +92,7 @@ Agent 处理（读 SOUL.md → 调用工具 → 生成回复）
 |-------|------|---------|---------|
 | momo | 协调调度、系统管理 | 最强模型 | 全部 |
 | coder | 代码开发、调试 | 代码能力强的模型 | exec, read, write, edit |
-| trader | 交易分析、监控 | 通用模型 | exec, read, write, cron |
-| scout | 信息搜索、情报 | 通用模型 | read, web_search (只读) |
-| tutor | 学习辅导 | 通用模型 | read, web_search (只读) |
-| butler | 生活管理 | 通用模型 | exec, read, cron, browser |
+| writer | 文档写作、整理 | 通用模型 | read, web_search, feishu_doc |
+| analyst | 数据分析、总结 | 通用模型 | exec, read, write, web_search |
 
 > 实际 Agent 数量和分工根据需求调整，以上仅为参考。

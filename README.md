@@ -46,9 +46,9 @@
                          │
           ┌──────────────┼──────────────┐
           │              │              │
-     群聊「开发」   群聊「交易」   群聊「情报」
+     群聊「开发」   群聊「学习」   群聊「生活」
           │              │              │
-      Coder Agent   Trader Agent   Scout Agent
+      Coder Agent   Tutor Agent    Butler Agent
 ```
 
 ### 核心能力
@@ -135,7 +135,7 @@ python3 scripts/create_agent.py \
 
 ## 命名建议
 
-协调者 Agent 推荐以 **MOMO** 命名（如 `momo`），功能 Agent 按职责正常命名（`coder`、`trader`、`scout` 等）。系统支持多个 MOMO 实例（peer 关系）。
+协调者 Agent 推荐以 **MOMO** 命名（如 `momo`），功能 Agent 按职责正常命名（`coder`、`writer`、`analyst` 等）。系统支持多个 MOMO 实例（peer 关系）。
 
 这不是强制要求，只是一个小小的偏好建议 🦞
 
@@ -145,10 +145,8 @@ python3 scripts/create_agent.py \
 |------|------|---------|---------|
 | **momo** | `momo-agent` | 协调权限（sessions_*, gateway） | 协调者（支持多实例 peer） |
 | **coder** | `coder-agent` | 代码执行、文件读写 | 开发、调试 |
-| **trader** | — | 代码执行、定时任务 | 交易分析 |
-| **scout** | — | 只读、网页搜索 | 信息搜索 |
-| **tutor** | — | 只读、网页搜索 | 学习辅导 |
-| **butler** | — | 代码执行、定时任务、浏览器 | 日程、生活 |
+| **writer** | — | 文档读写、网页搜索 | 文档、写作 |
+| **analyst** | — | 代码执行、文件读写、网页搜索 | 分析、总结 |
 
 > 有模板的 preset（main/coder）使用 `create_agent.py --preset` 时会自动复制 `examples/` 中的完整配置文件。
 

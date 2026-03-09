@@ -46,7 +46,7 @@ agent:{agent_id}:{channel}:{peer_kind}:{peer_id}
 |-------|------|------|
 | momo | ✅ | 协调调度 |
 | coder | 可选 | 可能需要查询其他 Agent |
-| trader/scout/tutor | ❌ | 专注本职，被动响应 |
+| writer/analyst | ❌ | 专注本职，被动响应 |
 
 在 `tools.allow` 中添加：`sessions_list`, `sessions_history`, `sessions_send`
 

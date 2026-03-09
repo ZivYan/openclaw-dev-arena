@@ -17,8 +17,8 @@
 | `your-bot-name` | Bot 名称 | 飞书应用 → 机器人设置 |
 | `ou_YOUR_OPEN_ID` | 用户的飞书 open_id | 给 Bot 发私信 → 从日志获取 |
 | `oc_CODER_CHAT_ID` | Coder Agent 群聊 ID | 创建群聊后获取 |
-| `oc_SCOUT_CHAT_ID` | Scout Agent 群聊 ID | 创建群聊后获取 |
-| `oc_ASSISTANT_CHAT_ID` | Assistant Agent 群聊 ID | 创建群聊后获取 |
+| `oc_WRITER_CHAT_ID` | Writer Agent 群聊 ID | 创建群聊后获取 |
+| `oc_ANALYST_CHAT_ID` | Analyst Agent 群聊 ID | 创建群聊后获取 |
 | `<YOUR_GATEWAY_TOKEN>` | Gateway 认证令牌 | 运行 `openssl rand -hex 24` 生成 |
 | `<YOUR_BRAVE_API_KEY>` | Brave 搜索 API Key（可选） | https://brave.com/search/api/ |
 | `fallback-provider/fallback-model` | 备用模型（可选） | 可删除或替换为实际模型 |

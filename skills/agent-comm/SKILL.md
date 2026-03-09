@@ -16,8 +16,8 @@ agent:{agent_id}:{channel}:{peer_kind}:{peer_id}
 ```
 
 示例：
-- `agent:trader:feishu:group:oc_xxx`
-- `agent:scout:feishu:group:oc_yyy`
+- `agent:coder:feishu:group:oc_xxx`
+- `agent:writer:feishu:group:oc_yyy`
 
 **不要硬编码 sessionKey**，用 `sessions_list` 动态查找。
 

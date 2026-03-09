@@ -102,60 +102,42 @@
         }
       },
       {
-        "id": "scout",
-        "name": "Scout",
-        "workspace": "/home/user/.openclaw/workspace-scout",
+        "id": "writer",
+        "name": "Writer",
+        "workspace": "/home/user/.openclaw/workspace-writer",
         "model": {
           "primary": "your-provider/your-model-id"
         },
         "tools": {
           "allow": [
             "read",
-            "message",
-            "web_search",
-            "web_fetch",
-            "session_status"
-          ],
-          "deny": [
-            "exec",
-            "write",
-            "edit",
-            "browser",
-            "gateway"
-          ]
-        }
-      },
-      {
-        "id": "assistant",
-        "name": "Assistant",
-        "workspace": "/home/user/.openclaw/workspace-assistant",
-        "model": {
-          "primary": "your-provider/your-model-id"
-        },
-        "heartbeat": {
-          "every": "60m",
-          "activeHours": {
-            "start": "09:00",
-            "end": "22:00"
-          },
-          "target": "last"
-        },
-        "tools": {
-          "allow": [
-            "exec",
-            "read",
-            "write",
-            "edit",
             "message",
             "web_search",
             "web_fetch",
             "session_status",
-            "cron",
             "feishu_doc",
-            "feishu_perm",
-            "sessions_list",
-            "sessions_history",
-            "sessions_send"
+            "feishu_perm"
+          ]
+        }
+      },
+      {
+        "id": "analyst",
+        "name": "Analyst",
+        "workspace": "/home/user/.openclaw/workspace-analyst",
+        "model": {
+          "primary": "your-provider/your-model-id"
+        },
+        "tools": {
+          "allow": [
+            "exec",
+            "read",
+            "write",
+            "message",
+            "web_search",
+            "web_fetch",
+            "session_status",
+            "feishu_doc",
+            "feishu_perm"
           ]
         }
       }
@@ -197,24 +179,24 @@
       }
     },
     {
-      "agentId": "scout",
+      "agentId": "writer",
       "match": {
         "channel": "feishu",
         "accountId": "default",
         "peer": {
           "kind": "group",
-          "id": "oc_SCOUT_CHAT_ID"
+          "id": "oc_WRITER_CHAT_ID"
         }
       }
     },
     {
-      "agentId": "assistant",
+      "agentId": "analyst",
       "match": {
         "channel": "feishu",
         "accountId": "default",
         "peer": {
           "kind": "group",
-          "id": "oc_ASSISTANT_CHAT_ID"
+          "id": "oc_ANALYST_CHAT_ID"
         }
       }
     }
@@ -242,11 +224,12 @@
           "enabled": true,
           "requireMention": false
         },
-        "oc_SCOUT_CHAT_ID": {
+        "oc_WRITER_CHAT_ID": {
           "enabled": true,
-          "requireMention": false
+          "requireMention": false,
+          "groupAllowFrom": "*"
         },
-        "oc_ASSISTANT_CHAT_ID": {
+        "oc_ANALYST_CHAT_ID": {
           "enabled": true,
           "requireMention": false,
           "groupAllowFrom": "*"

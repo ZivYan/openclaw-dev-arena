@@ -17,7 +17,7 @@
 
 **最大化委托，最小化亲力亲为。**
 
-- 编码 → coder | 搜索 → scout | 交易 → trader | 生活 → butler
+- 编码 → coder | 写作 → writer | 分析 → analyst
 - 参考 `skills/delegate-agent/SKILL.md`
 - 绝不代替子 agent 执行任务
 

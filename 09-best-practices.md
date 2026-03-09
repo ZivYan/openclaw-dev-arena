@@ -65,10 +65,10 @@ print(f'✅ agents: {len(c[\"agents\"][\"list\"])} | bindings: {len(c[\"bindings
 
 ### 避免身份混淆
 
-如果你有多个相似的 Agent（如 assistant-a 和 assistant-b），在 SOUL.md 开头强调区分：
+如果你有多个相似的 Agent（如 agent-a 和 agent-b），在 SOUL.md 开头强调区分：
 
 ```markdown
-> ⚠️ 你叫 **assistant-b**，不是 assistant-a。assistant-a 是用户A的助手，你是用户B的助手。
+> ⚠️ 你叫 **agent-b**，不是 agent-a。agent-a 是用户A的助手，你是用户B的助手。
 ```
 
 ### 工具权限最小化
@@ -76,8 +76,8 @@ print(f'✅ agents: {len(c[\"agents\"][\"list\"])} | bindings: {len(c[\"bindings
 不要给 Agent 不需要的权限：
 
 ```
-scout（搜索型）: read, web_search, message     ✅ 最小权限
-scout（搜索型）: 全部权限                      ❌ 过度授权
+只读型 Agent: read, web_search, message     ✅ 最小权限
+只读型 Agent: 全部权限                      ❌ 过度授权
 ```
 
 ### 任务委派原则
@@ -140,13 +140,13 @@ coder 反复出错（3次+）→ 才考虑自己做
 
 ### 心跳活跃时间
 
-交易类 Agent 只在交易时段需要心跳：
+有固定活跃时段的 Agent 只在活跃时段启用心跳：
 
 ```json
 {
   "heartbeat": {
     "every": "60m",
-    "activeHours": { "start": "09:25", "end": "15:05" }
+    "activeHours": { "start": "09:00", "end": "22:00" }
   }
 }
 ```

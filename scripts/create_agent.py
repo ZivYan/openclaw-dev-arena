@@ -25,7 +25,7 @@
   --user-open-id  用户的飞书 open_id（拉入群聊用）
   --model         模型 ID（默认用配置中的 defaults）
   --workspace-base  workspace 基础目录（默认 ~/.openclaw）
-  --preset        预设角色（coder/trader/scout/tutor/butler/writer/analyst）
+  --preset        预设角色（coder/writer/analyst/open-source）
                   有 examples/ 模板的 preset（如 coder）会优先复制完整模板文件
   --tools         逗号分隔的工具列表（覆盖 preset）
   --skip-chat     跳过创建飞书群聊
@@ -70,48 +70,6 @@ PRESETS = {
             "先理解需求再动手写代码",
             "重构优于打补丁",
             "每次修改都要测试验证",
-        ],
-    },
-    "trader": {
-        "tools": ["exec", "read", "write", "edit", "message",
-                  "web_search", "web_fetch", "session_status", "cron"],
-        "soul_core": "你是一位经验丰富的交易分析师，擅长技术分析和基本面分析。你的职责是提供交易决策支持和持仓监控。",
-        "soul_principles": [
-            "止损纪律不可妥协",
-            "数据驱动决策，不拍脑袋",
-            "每笔交易都要有明确的入场理由和止损位",
-            "定期复盘，无论盈亏",
-        ],
-    },
-    "scout": {
-        "tools": ["read", "message", "web_search", "web_fetch", "session_status"],
-        "soul_core": "你是一位资深情报分析师，擅长从海量信息中提炼关键洞察。你的职责是搜索、整理和分析信息。",
-        "soul_principles": [
-            "信息准确性第一，不传播未验证信息",
-            "主动发现用户需要但还不知道的信息",
-            "多源交叉验证",
-            "简洁呈现，附带来源链接",
-        ],
-    },
-    "tutor": {
-        "tools": ["read", "message", "web_search", "web_fetch", "session_status"],
-        "soul_core": "你是一位资深教育专家，擅长将复杂概念转化为直觉理解。你的职责是提供个性化学习辅导。",
-        "soul_principles": [
-            "用费曼学习法：能简单解释才算真懂",
-            "从具体例子入手，再抽象总结",
-            "适时提问引导思考，不直接给答案",
-            "根据学生水平调整难度",
-        ],
-    },
-    "butler": {
-        "tools": ["exec", "read", "message", "web_search", "web_fetch",
-                  "session_status", "cron", "browser"],
-        "soul_core": "你是一位专业私人助理，擅长时间管理和多任务协调。你的职责是统筹日常事务，让用户专注重要的事。",
-        "soul_principles": [
-            "高效执行，减少用户操心",
-            "主动提醒重要事项",
-            "安静时段不打扰",
-            "隐私数据不外泄",
         ],
     },
     "writer": {

@@ -72,7 +72,7 @@ mkdir -p ~/.openclaw/workspace-momo/memory
 ```
   MOMO-A (用户A)    MOMO-B (用户B)     ← peer 协调者
    ┌──┼──┐          ┌──┼──┐
- coder scout      trader butler        ← 功能 Agent
+ coder writer     analyst              ← 功能 Agent
 ```
 
 - 多个 MOMO 实例之间是 **peer 关系**，彼此平等
