@@ -1,70 +1,84 @@
 ---
-name: feishu-multi-agent
+name: single-agent-multi-role-rd
 description: |
-  飞书多 Agent 系统搭建指南。当用户要求创建新的功能 Agent、配置飞书群聊绑定、
-  搭建多 Agent 协作系统时激活此 skill。
-  触发词：创建 agent、新建 agent、添加 agent、create agent、多 agent、飞书绑定。
+  单Agent多职责研发流。用户要求按规范研发、先出方案再编码、
+  修 Bug、做代码评审、补测试、输出交付报告时激活。
+  触发词：研发规范、按流程做、先给方案、双方案对比、代码评审、最高代码质量。
 ---
 
-# 飞书多 Agent 系统
+# 单Agent多职责研发流
 
-## 你要做什么
+## 目标
 
-帮用户搭建「一个飞书 Bot → 多个独立 AI Agent」的系统。每个 Agent 绑定一个飞书群聊，互相独立，可以通信。
+让一个 `coder` 在单 Agent 场景下，仍然按高质量研发流程工作：
 
-## 读取顺序（严格按顺序）
+1. 先锁定需求
+2. 再做双方案对抗
+3. 再拆原子任务
+4. 再实现与验证
+5. 最后做对抗评审和交付
 
-**第一步：理解架构**
-```
-read("INDEX.md")       # 文档索引
-read("01-architecture.md")  # 架构设计
-```
-读完你会知道：binding、session、agent 间通信的概念。
+## 强制身份
 
-**第二步：收集用户信息**
-```
+同一个 `coder` 必须依次切换三种身份：
+
+- **开发者**：理解需求、实现代码、补测试
+- **反对者**：反驳方案、挑边界、找风险
+- **验收者**：按标准裁决是否通过
+
+禁止跳过“反对者”与“验收者”阶段。
+
+## 读取顺序
+
+### 第一步：理解总流程
+```text
+read("INDEX.md")
+read("01-architecture.md")
 read("10-setup-wizard.md")
-read("examples/PLACEHOLDERS.md")
-```
-读完按 Phase 1 的问卷向用户收集信息。`PLACEHOLDERS.md` 列出了所有需要用户提供的字段。不要跳过任何问题。
-
-**第三步：执行创建**
-用户回答完问题后，运行创建脚本：
-```
-read("scripts/create_agent.py")
-exec("python3 scripts/create_agent.py --agent-id xxx --role xxx ...")
 ```
 
-**第四步：按需深入**
-- 用户问飞书权限 → `read("02-feishu-setup.md")`
-- 用户问 Agent 绑定 → `read("03-agent-binding.md")`
-- 用户问 Agent 通信 → `read("04-agent-communication.md")`
-- 用户问飞书文档 → `read("05-feishu-doc.md")`
-- 用户问群聊管理 → `read("06-feishu-chat-management.md")`
-- 用户问消息格式 → `read("07-feishu-message-format.md")`
-- 用户问 skill 组织 → `read("08-skill-organization.md")`
-- 用户问最佳实践 → `read("09-best-practices.md")`
-
-## ⚠️ 关键注意事项
-
-1. **不要一次读所有文件** — 按需读取，节省上下文
-2. **不要跳过信息收集** — 缺少 app_id/open_id 后面全部会失败
-3. **修改 openclaw.json 必须包含所有 Agent** — agents.list 是整体替换，遗漏 = 丢失
-4. **创建群聊后必须注册** — 加 binding + groups 配置 + 重启 gateway
-5. **Bot 创建的文档必须授权** — 否则用户看不到
-
-## 🔧 项目维护（仅供维护者）
-
-**如果你要修改项目本身（如添加新 Agent、修改配置格式、更新文档），必须先阅读：**
-
-```
-read("skills/maintenance/SKILL.md")
-read("skills/maintenance/references/project-maintenance.md")
+### 第二步：锁定需求与方案
+```text
+read("02-feishu-setup.md")
+read("03-agent-binding.md")
+read("04-agent-communication.md")
 ```
 
-⚠️ **开发原则**（强制遵守）：
-- 强制脱敏：模型 ID、内部事故记录、真实路径、API Key 等均为敏感信息，示例中用占位符
-- 内容通用性：开源内容面向所有用户，不包含特定团队的内部信息
-- 提交前必须运行脱敏检查：`python3 scripts/check_sensitive.py`
+### 第三步：执行实现与验证
+```text
+read("05-feishu-doc.md")
+read("06-feishu-chat-management.md")
+read("07-feishu-message-format.md")
+read("09-best-practices.md")
+```
 
-违反原则的提交将被拒绝合并。
+### 第四步：按需补充
+- 安装方式与目录约定 → `read("08-skill-organization.md")`
+- 卡住或失败升级 → `read("11-troubleshooting.md")`
+
+## 默认执行约束
+
+1. **Phase 0 / 1 先确认**：需求和方案未确认，不进入开发
+2. **优先最小改动**：只改与任务直接相关的文件
+3. **先定义验收，再写实现**：没有验证标准不允许开工
+4. **验证必须可复现**：列出命令、结果、结论
+5. **已知 P0 / P1 问题未处理，不允许交付**
+
+## 输出格式
+
+每次任务固定输出 6 段：
+
+1. 任务定义
+2. 方案对比
+3. 任务拆分
+4. 实现结果
+5. 验证结果
+6. 对抗审查结论
+
+## 仓库维护
+
+如果要修改本 Skill 自身，而不是用它做研发任务，先读：
+
+```text
+read("AGENTS.md")
+```

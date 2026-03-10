@@ -13,6 +13,8 @@
 
 ## 快速部署
 
+> 提示：协调者模板目录名是 `momo-agent`，但示例配置里的默认 agent id 仍为 `main`，名称可继续使用 `MOMO`。
+
 ```bash
 # 1. 复制到 workspace
 cp -r examples/momo-agent ~/.openclaw/workspace-momo

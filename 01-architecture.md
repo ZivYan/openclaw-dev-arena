@@ -1,98 +1,50 @@
-# 01 - 整体架构设计
+# 01 - Skill 架构与三重身份
 
-## 核心思路
+## 核心模型
 
-**一个飞书 Bot，多个 AI Agent，通过群聊隔离。**
+这个 Skill 的核心不是多 Agent，而是**一个 `coder` + 三种强制身份**：
 
-```
-飞书 Bot (一个应用)
-    │
-    ├── 群聊 A → Agent: coder   (开发助手)
-    ├── 群聊 B → Agent: writer  (写作助手)
-    ├── 群聊 C → Agent: analyst (分析助手)
-    │
-    ├── DM 用户 A → Agent: main   (主助手)
-    └── DM 用户 B → Agent: user-b  (用户B的专属助手)
-```
+- **开发者**：实现需求
+- **反对者**：专门找错
+- **验收者**：只按标准裁决
 
-## 关键概念
+同一个任务里，这三种身份必须依次出现。
 
-### 1. Binding（绑定）
+## 总流程
 
-OpenClaw 的 `bindings` 配置决定了**哪个群聊/DM → 路由到哪个 Agent**。每条 binding 包含：
-
-- `agentId`: 目标 Agent 的 ID
-- `match.channel`: 消息来源渠道（`feishu`）
-- `match.peer.kind`: `group`（群聊）或 `dm`（私信）
-- `match.peer.id`: 群聊 ID 或用户 open_id
-
-### 2. Session（会话）
-
-每个 Agent + 群聊/DM 组合形成一个独立 Session，有独立的：
-- 上下文（对话历史）
-- 工作目录（workspace）
-- 模型配置
-- 工具权限
-
-Session Key 格式：`agent:{agent_id}:{channel}:{peer_kind}:{peer_id}`
-
-### 3. Agent 间通信
-
-Agent 之间通过 `sessions_send` 工具通信：
-
-```
-Agent A (main) ──sessions_send──► Agent B (coder)
-                                        │
-                                    处理任务
-                                        │
-                                    返回结果
+```text
+Phase 0 需求锁定
+Phase 1 方案对抗
+Phase 2 任务拆分
+Phase 3 原子开发
+Phase 4 自测验证
+Phase 5 对抗评审
+Phase 6 提交交付
 ```
 
-### 4. 工具权限隔离
+## 质量优先级
 
-每个 Agent 可以配置独立的工具白名单/黑名单：
+1. 安全性
+2. 正确性
+3. 可测试性
+4. 一致性
+5. 可维护性
+6. 开发效率
 
-- 协调者 Agent（如 MOMO）: 拥有所有权限（gateway、browser、cron...）
-- 文档 Agent（如 writer）: read、message、web_search、feishu_doc
-- 编码 Agent（如 coder）: exec、read、write、edit
-- 跨 Agent 通信: sessions_list、sessions_history、sessions_send
+## 适用范围
 
-## 架构优势
+- 新功能开发
+- Bug 修复
+- 测试补充
+- 文档同步
+- 代码评审
+- 提交前收口
 
-| 特性 | 说明 |
-|------|------|
-| **隔离性** | 每个 Agent 有独立 workspace、session、权限 |
-| **可扩展** | 新增 Agent 只需：创建 workspace → 建群 → 加 binding |
-| **灵活路由** | 群聊绑定 + DM 路由 + 跨 Agent 通信 |
-| **统一入口** | 用户只需跟一个 Bot 对话 |
-| **安全可控** | 工具权限按 Agent 粒度控制 |
+## 默认原则
 
-## 数据流
-
-```
-用户在飞书群聊发消息
-    │
-    ▼
-OpenClaw Gateway (WebSocket 长连接)
-    │
-    ├─ 匹配 binding → 路由到对应 Agent
-    │
-    ▼
-Agent 处理（读 SOUL.md → 调用工具 → 生成回复）
-    │
-    ├─ 需要其他 Agent 协助？ → sessions_send
-    │
-    ▼
-回复发送到原群聊/DM
-```
-
-## 推荐的 Agent 分工
-
-| Agent | 职责 | 模型建议 | 工具权限 |
-|-------|------|---------|---------|
-| momo | 协调调度、系统管理 | 最强模型 | 全部 |
-| coder | 代码开发、调试 | 代码能力强的模型 | exec, read, write, edit |
-| writer | 文档写作、整理 | 通用模型 | read, web_search, feishu_doc |
-| analyst | 数据分析、总结 | 通用模型 | exec, read, write, web_search |
-
-> 实际 Agent 数量和分工根据需求调整，以上仅为参考。
+- 先锁需求，再给方案
+- 先定义验收，再写实现
+- 优先最小改动
+- 不做无关重构
+- 不忽略错误与验证
+- 结论必须能追溯到命令、文件或测试结果

@@ -2,29 +2,29 @@
 
 ## Project Structure & Module Organization
 
-This repository is documentation-first. Root files `01-architecture.md` through `11-troubleshooting.md` are the main reference set, and `INDEX.md` is the entry point for navigation. Reusable agent templates live in `examples/` (for example `examples/coder-agent/` and `examples/momo-agent/`). Reusable OpenClaw skills live in `skills/`, each in its own folder with a `SKILL.md`. Automation is intentionally small: `scripts/create_agent.py` is the primary helper script. Treat `log/` as runtime output, not source.
+This repository is a root OpenClaw skill. `SKILL.md` is the entrypoint, `INDEX.md` is the reading map, and `01-11` documents define the研发规范 workflow. `scripts/` contains helper scripts used for minimal verification. `examples/` and `skills/` are kept as compatibility references and are not the primary entry path.
 
 ## Build, Test, and Development Commands
 
-There is no full build pipeline in this repo. Use small, targeted checks:
+- `python3 -m py_compile scripts/create_agent.py` — syntax-check the bundled helper script.
+- `python3 -m json.tool examples/openclaw-config.json` — validate the example JSON file.
+- `git diff --stat` — review change scope before handoff.
+- `git status --short` — confirm staged and unstaged changes.
 
-- `python3 scripts/create_agent.py --help` — verify the CLI entrypoint and arguments.
-- `python3 -m py_compile scripts/create_agent.py` — catch Python syntax errors.
-- `python3 scripts/create_agent.py --agent-id demo --preset coder --workspace-base /tmp/fma --skip-chat --skip-config` — smoke-test template generation without Feishu or config writes.
-- `grep -R "old text" --include="*.md" .` — locate related docs before editing cross-file terminology.
+Run the smallest relevant validation first, then expand only if needed.
 
 ## Coding Style & Naming Conventions
 
-Follow the existing style instead of introducing new patterns. Python uses 4-space indentation, `snake_case`, and straightforward standard-library code. Markdown files use concise sections, explicit paths, and command examples. Keep numbered root docs in the current `NN-topic.md` format. Preserve the language of the surrounding file; most root docs and templates are Chinese.
+Keep changes minimal and consistent with existing repository style. Markdown should be concise, procedural, and explicit about file paths and commands. Python uses 4-space indentation and `snake_case`. Do not add new dependencies unless explicitly requested.
 
 ## Testing Guidelines
 
-This repo does not currently ship a formal test suite. Validate the smallest affected surface: syntax-check Python changes, smoke-test `create_agent.py` for script changes, and manually verify links, paths, and examples for Markdown changes. When changing templates or presets, test both a template-backed preset such as `coder` and a generated preset path.
+This repo is documentation-heavy, so validation is mostly command-based. For doc changes, verify internal consistency and command accuracy. For script changes, run syntax checks and the smallest realistic smoke test. If a task spans more than 5 files or changes structure, create `IMPLEMENTATION_PLAN.md` during execution and delete it when done.
 
 ## Commit & Pull Request Guidelines
 
-Recent history follows Conventional Commit prefixes such as `feat:` and `fix:`. Keep commits focused and descriptive, for example `docs: clarify agent template setup`. PRs should explain the user-facing impact, list touched docs/examples/skills, and include sample commands or screenshots when behavior or rendered content changes.
+Use focused commits with the repository’s emoji style, for example `♻️ 收敛 Skill 定位并同步流程文档`. Keep each commit to one logical change. PRs should summarize scope, verification commands, risks, and any files intentionally left unchanged.
 
 ## Security & Configuration Tips
 
-Redact all secrets and identifiers. Never commit real `appId`, `appSecret`, Feishu chat IDs, personal paths, or internal model names. Use placeholders such as `<APP_ID>`, `<provider/model_id>`, and `/path/to/.openclaw/...`. Keep examples generic and reusable for external OpenClaw users.
+Never commit secrets, real user identifiers, chat IDs, or private paths. Use placeholders such as `<YOUR_API_KEY>` and `/path/to/...`. Keep examples generic and reusable for public OpenClaw users.

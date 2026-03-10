@@ -1,69 +1,39 @@
-# 04 - Agent 间通信
+# 04 - Phase 2：任务拆分
 
-## 工具
+## 目标
 
-| 工具 | 用途 | 示例 |
-|------|------|------|
-| `sessions_list` | 列出活跃 Session | `sessions_list(limit=10)` |
-| `sessions_send` | 向 Agent 发消息 | `sessions_send(sessionKey="...", message="...")` |
-| `sessions_history` | 获取历史记录 | `sessions_history(sessionKey="...", limit=5)` |
+把方案拆成可独立验证的原子任务。
 
-## Session Key 格式
+## 拆分规则
 
-```
-agent:{agent_id}:{channel}:{peer_kind}:{peer_id}
-```
+- 单任务尽量 `<= 2h`
+- 一个任务只解决一个问题
+- 每个任务都必须有完成标准
+- 每个任务都应能独立验证
 
-示例：
-- `agent:coder:feishu:group:oc_xxx` — coder 的飞书群聊 session
-- `agent:main:feishu:dm:ou_xxx` — main 的私信 session
+## 推荐拆分顺序
 
-## 异步委派（推荐模式）
+1. 核心入口调整
+2. 依赖调用同步
+3. 测试或验证补充
+4. 文档与示例同步
+5. 残留清理
 
-```
-用户 → main: "帮我写个脚本"
-  │
-  ├─ 拆解任务 brief
-  ├─ sessions_send → coder（10-30s 超时）
-  ├─ 立即回复用户"已派发"     ← 用户感知：秒回
-  │
-  └─ 心跳时 sessions_history → 获取结果 → 汇总回复
-```
+## 计划文件规则
 
-**关键原则：**
-- **超时 10-30 秒**：避免协调者阻塞
-- **超时是正常的**：表示功能 Agent 在后台工作
-- **立即回复用户**：不等结果
-- **心跳跟进**：定期检查进度
+出现以下情况时，创建临时 `IMPLEMENTATION_PLAN.md`：
 
-> ❌ 同步等待（120s+ 超时）会阻塞协调者、浪费资源、用户体验差。
+- 改动超过 5 个文件
+- 涉及结构调整
+- 任务要分阶段推进
 
-## 权限控制
+任务完成后删除该文件。
 
-不是所有 Agent 都需要通信能力：
-
-| Agent | 通信 | 理由 |
-|-------|------|------|
-| momo | ✅ | 协调调度 |
-| coder | 可选 | 可能需要查询其他 Agent |
-| writer/analyst | ❌ | 专注本职，被动响应 |
-
-在 `tools.allow` 中添加：`sessions_list`, `sessions_history`, `sessions_send`
-
-## SOUL.md 通信指引模板
-
-在需要通信的 Agent 的 SOUL.md 中添加：
+## 输出模板
 
 ```markdown
-## 跨 Agent 通信
-1. `sessions_list` 查找目标 sessionKey
-2. `sessions_send(sessionKey=..., message=...)` 发送
-3. `sessions_history(sessionKey=...)` 查看回复
+## 任务拆分
+- Task 1：
+- Task 2：
+- Task 3：
 ```
-
-## 注意事项
-
-- **避免链式阻塞**：A→B→C 的调用都要异步
-- **避免循环通信**：A→B→A 会死循环
-- **不要硬编码 sessionKey**：session 可能重建，用 `sessions_list` 查找
-- **通信内容不含敏感信息**：不跨 workspace 传递私密数据

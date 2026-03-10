@@ -1,78 +1,52 @@
-# 飞书多 Agent 协作方案
-
-基于 OpenClaw 的飞书多 Agent 系统设计与实现指南。
+# 单Agent多职责研发流索引
 
 ## 这是什么
 
-一套完整的方案，让你用**飞书群聊**作为多个 AI Agent 的独立通信频道，实现：
-
-- 🤖 **一个飞书 Bot → 多个独立 Agent**（每个群聊绑定一个 Agent）
-- 📡 **Agent 间通信**（Agent A 可以给 Agent B 发消息、查状态）
-- 📝 **飞书文档读写**（通过 API 创建/编辑飞书文档）
-- 💬 **飞书群聊管理**（创建群、拉人、改名）
-- 🎯 **DM 路由**（不同用户私信 Bot → 路由到不同 Agent）
+这是一个给 OpenClaw 使用的研发流程 Skill，目标是让单 `coder` 在没有多 Agent 协作的前提下，也能按高质量流程完成需求、方案、实现、验证、评审和交付。
 
 ## 适合谁
 
-- 使用 OpenClaw 的开发者
-- 想用飞书作为 AI Agent 交互界面的团队
-- 需要多 Agent 协作系统的个人
+- 想让 OpenClaw 按固定研发流程工作的开发者
+- 想要“先方案、后编码”的单 Agent 工作流
+- 希望把代码质量、验证和交付统一成 SOP 的团队
 
-## ⚠️ 项目维护（重要）
+## 文档地图
 
-**如果你要修改这个项目本身（如修改配置格式、更新文档），必须先阅读：**
+| 文件 | 用途 |
+|------|------|
+| `01-architecture.md` | Skill 架构、三重身份、总流程 |
+| `02-feishu-setup.md` | Phase 0：需求锁定 |
+| `03-agent-binding.md` | Phase 1：方案对抗 |
+| `04-agent-communication.md` | Phase 2：任务拆分 |
+| `05-feishu-doc.md` | Phase 3：原子开发 |
+| `06-feishu-chat-management.md` | Phase 4：自测验证 |
+| `07-feishu-message-format.md` | Phase 5：对抗评审与输出格式 |
+| `08-skill-organization.md` | 安装方式与目录组织 |
+| `09-best-practices.md` | 质量红线与最佳实践 |
+| `10-setup-wizard.md` | 端到端执行清单 |
+| `11-troubleshooting.md` | 失败与受阻升级策略 |
 
-- `skills/maintenance/SKILL.md` — 维护指南入口
-- `skills/maintenance/references/project-maintenance.md` — 详细开发原则
+## 推荐阅读顺序
 
-**强制要求：**
-- 脱敏：模型 ID、内部事故记录、真实路径、API Key 等均为敏感信息，示例中用占位符
-- 通用性：开源内容面向所有用户，不包含特定团队的内部信息
-- 提交前运行：`python3 scripts/check_sensitive.py`
+1. `01-architecture.md`
+2. `02-feishu-setup.md`
+3. `03-agent-binding.md`
+4. `10-setup-wizard.md`
+5. 再按需进入 `04-11`
 
-## 目录结构
+## 执行约束
 
-```
-feishu-multi-agent/
-├── README.md                     # 本文件
-├── 01-architecture.md            # 整体架构设计
-├── 02-feishu-setup.md            # 飞书应用配置
-├── 03-agent-binding.md           # Agent 绑定与路由
-├── 04-agent-communication.md     # Agent 间通信
-├── 05-feishu-doc.md              # 飞书文档读写
-├── 06-feishu-chat-management.md  # 飞书群聊管理
-├── 07-feishu-message-format.md   # 飞书消息格式规范
-├── 08-skill-organization.md      # Skill 目录组织
-├── 09-best-practices.md          # 最佳实践与踩坑记录
-├── 10-setup-wizard.md            # 配置引导（权限申请 + 自动创建功能 Agent）
-├── 11-troubleshooting.md         # 故障排查指南
-├── scripts/
-│   └── create_agent.py           # 一键创建功能 Agent 脚本
-├── examples/
-│   ├── openclaw-config.json      # 示例配置（脱敏）
-│   ├── agent-soul-template.md    # Agent SOUL.md 模板
-│   └── agent-identity-template.md # Agent IDENTITY.md 模板
-├── SKILL.md                      # OpenClaw Skill 入口（自动加载）
-└── skills/
-    ├── agent-comm/SKILL.md       # 跨 Agent 通信 Skill
-    ├── feishu-chat/SKILL.md      # 飞书群聊管理 Skill
-    ├── feishu-doc-writer/        # 飞书文档写作 Skill
-    │   ├── SKILL.md
-    │   └── references/
-    │       ├── feishu-message-format.md
-    │       └── perm-fallback.md
-    └── delegate-agent/SKILL.md   # 任务委派 Skill（通用化版本）
-```
+- Phase 0 / 1 默认需要用户确认
+- 单任务尽量控制在 2 小时以内
+- 超过 5 个文件或涉及结构变化时，创建临时 `IMPLEMENTATION_PLAN.md`
+- 每次任务都必须给出验证结果与对抗审查结论
 
-## 快速开始
+## 关键结论
 
-1. 阅读 [01-architecture.md](01-architecture.md) 了解整体设计
-2. 按 [10-setup-wizard.md](10-setup-wizard.md) 的引导流程，收集信息、申请权限、创建 Agent
-3. 或手动操作：[02-feishu-setup.md](02-feishu-setup.md) → [03-agent-binding.md](03-agent-binding.md)
-4. 按需阅读其他章节
+这个 Skill 不依赖“很多 Agent”来提高质量，而依赖：
 
-## 前置条件
-
-- [OpenClaw](https://github.com/openclaw/openclaw) 已安装
-- 飞书开放平台账号（个人版或企业版均可）
-- macOS / Linux 环境
+- 单 `coder` 的上下文集中
+- 双方案对比
+- 强制反方审查
+- 清单化验证
+- 可追溯交付
