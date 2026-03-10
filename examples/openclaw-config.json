@@ -1,17 +1,48 @@
 {
-  "_comment": "OpenClaw 飞书多 Agent 示例配置 — 替换所有 <YOUR_xxx> 和 ou_YOUR_xxx 占位符",
+  "_comment": "OpenClaw 单Agent多职责研发流示例配置 — 对外单入口、对内三角色模型路由",
   "models": {
     "mode": "merge",
     "providers": {
-      "your-provider": {
-        "baseUrl": "https://your-api-endpoint/",
-        "apiKey": "<YOUR_API_KEY>",
+      "anthropic-provider": {
+        "baseUrl": "https://anthropic-api-endpoint/",
+        "apiKey": "<YOUR_ANTHROPIC_API_KEY>",
         "api": "anthropic-messages",
         "models": [
           {
-            "id": "your-model-id",
-            "name": "your-model-name",
+            "id": "review-model-id",
+            "name": "review-model-name",
             "api": "anthropic-messages",
+            "reasoning": true,
+            "input": [
+              "text",
+              "image"
+            ],
+            "contextWindow": 200000,
+            "maxTokens": 8192
+          }
+        ]
+      },
+      "openai-provider": {
+        "baseUrl": "https://openai-api-endpoint/",
+        "apiKey": "<YOUR_OPENAI_API_KEY>",
+        "api": "responses",
+        "models": [
+          {
+            "id": "code-model-id",
+            "name": "code-model-name",
+            "api": "responses",
+            "reasoning": true,
+            "input": [
+              "text",
+              "image"
+            ],
+            "contextWindow": 200000,
+            "maxTokens": 8192
+          },
+          {
+            "id": "delivery-model-id",
+            "name": "delivery-model-name",
+            "api": "responses",
             "reasoning": true,
             "input": [
               "text",
@@ -26,15 +57,6 @@
   },
   "agents": {
     "defaults": {
-      "model": {
-        "primary": "your-provider/your-model-id",
-        "fallbacks": []
-      },
-      "models": {
-        "your-provider/your-model-id": {
-          "alias": "default"
-        }
-      },
       "workspace": "/home/user/.openclaw/workspace",
       "memorySearch": {
         "enabled": true,
@@ -57,30 +79,37 @@
     },
     "list": [
       {
-        "id": "momo",
+        "id": "rd-lead",
         "default": true,
-        "workspace": "/home/user/.openclaw/workspace-momo",
+        "workspace": "/home/user/.openclaw/workspace-rd-lead",
         "model": {
-          "primary": "your-provider/your-model-id",
-          "fallbacks": [
-            "fallback-provider/fallback-model"
-          ]
+          "primary": "anthropic-provider/review-model-id"
         },
         "heartbeat": {
           "every": "30m",
           "target": "last"
         },
-        "name": "MOMO"
+        "name": "RD Lead",
+        "tools": {
+          "allow": [
+            "read",
+            "message",
+            "web_search",
+            "web_fetch",
+            "session_status",
+            "sessions_list",
+            "sessions_history",
+            "sessions_send",
+            "sessions_spawn"
+          ]
+        }
       },
       {
-        "id": "coder",
-        "name": "Coder",
-        "workspace": "/home/user/.openclaw/workspace-coder",
+        "id": "rd-coder",
+        "name": "RD Coder",
+        "workspace": "/home/user/.openclaw/workspace-rd-coder",
         "model": {
-          "primary": "your-provider/your-model-id",
-          "fallbacks": [
-            "fallback-provider/fallback-model"
-          ]
+          "primary": "openai-provider/code-model-id"
         },
         "tools": {
           "allow": [
@@ -89,49 +118,22 @@
             "write",
             "edit",
             "message",
-            "web_search",
-            "web_fetch",
             "session_status",
-            "browser",
-            "feishu_doc",
-            "feishu_perm",
-            "sessions_list",
-            "sessions_history",
-            "sessions_send"
+            "web_search",
+            "web_fetch"
           ]
         }
       },
       {
-        "id": "writer",
-        "name": "Writer",
-        "workspace": "/home/user/.openclaw/workspace-writer",
+        "id": "rd-ship",
+        "name": "RD Ship",
+        "workspace": "/home/user/.openclaw/workspace-rd-ship",
         "model": {
-          "primary": "your-provider/your-model-id"
+          "primary": "openai-provider/delivery-model-id"
         },
         "tools": {
           "allow": [
             "read",
-            "message",
-            "web_search",
-            "web_fetch",
-            "session_status",
-            "feishu_doc",
-            "feishu_perm"
-          ]
-        }
-      },
-      {
-        "id": "analyst",
-        "name": "Analyst",
-        "workspace": "/home/user/.openclaw/workspace-analyst",
-        "model": {
-          "primary": "your-provider/your-model-id"
-        },
-        "tools": {
-          "allow": [
-            "exec",
-            "read",
-            "write",
             "message",
             "web_search",
             "web_fetch",
@@ -157,7 +159,7 @@
   },
   "bindings": [
     {
-      "agentId": "momo",
+      "agentId": "rd-lead",
       "match": {
         "channel": "feishu",
         "accountId": "default",
@@ -168,35 +170,24 @@
       }
     },
     {
-      "agentId": "coder",
+      "agentId": "rd-coder",
       "match": {
         "channel": "feishu",
         "accountId": "default",
         "peer": {
           "kind": "group",
-          "id": "oc_CODER_CHAT_ID"
+          "id": "oc_RD_CODER_CHAT_ID"
         }
       }
     },
     {
-      "agentId": "writer",
+      "agentId": "rd-ship",
       "match": {
         "channel": "feishu",
         "accountId": "default",
         "peer": {
           "kind": "group",
-          "id": "oc_WRITER_CHAT_ID"
-        }
-      }
-    },
-    {
-      "agentId": "analyst",
-      "match": {
-        "channel": "feishu",
-        "accountId": "default",
-        "peer": {
-          "kind": "group",
-          "id": "oc_ANALYST_CHAT_ID"
+          "id": "oc_RD_SHIP_CHAT_ID"
         }
       }
     }
@@ -220,16 +211,11 @@
         "ou_YOUR_OPEN_ID"
       ],
       "groups": {
-        "oc_CODER_CHAT_ID": {
+        "oc_RD_CODER_CHAT_ID": {
           "enabled": true,
           "requireMention": false
         },
-        "oc_WRITER_CHAT_ID": {
-          "enabled": true,
-          "requireMention": false,
-          "groupAllowFrom": "*"
-        },
-        "oc_ANALYST_CHAT_ID": {
+        "oc_RD_SHIP_CHAT_ID": {
           "enabled": true,
           "requireMention": false,
           "groupAllowFrom": "*"

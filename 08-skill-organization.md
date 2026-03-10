@@ -28,6 +28,23 @@ single-agent-multi-role-rd/
 └── skills/
 ```
 
+## 推荐角色目录
+
+如果要在 OpenClaw 中按三角色落地，建议准备三个 workspace：
+
+```text
+~/.openclaw/
+├── workspace-rd-lead/
+├── workspace-rd-coder/
+└── workspace-rd-ship/
+```
+
+其中：
+
+- `rd-lead` 负责对外入口与裁决
+- `rd-coder` 负责编码与自测
+- `rd-ship` 负责复核与交付
+
 ## 建议读取策略
 
 - 首次进入：只读 `SKILL.md`、`INDEX.md`、`01-03`、`10`

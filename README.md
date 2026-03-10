@@ -1,12 +1,13 @@
 # 🛠️ 单Agent多职责研发流
 
-> 面向单 `coder` 场景的高质量研发流程，可直接作为仓库安装到 OpenClaw 中使用。
+> 对外单入口、对内多模型多职责的高质量研发流程，可直接作为仓库安装到 OpenClaw 中使用。
 
 ## 项目定位
 
-这个仓库的目标不是再提供多 Agent 编排模板，而是提供一套**可安装、可执行、可审查**的研发规范：
+这个仓库的目标不是再提供多 Agent 编排模板，而是提供一套**单入口 + 多职责路由**的研发规范：
 
-- 一个 `coder` 也能按完整研发流程工作
+- 用户只面对一个研发入口
+- 内部按阶段把任务路由给最适合的模型
 - 先方案、后实现，强制保留对抗审查
 - 输出结果可验证、可复盘、可归档
 
@@ -30,11 +31,15 @@ Phase 5 对抗评审
 Phase 6 提交交付
 ```
 
-同一个 `coder` 在流程里要切换三种身份：
+## 推荐角色与模型
 
-- **开发者**
-- **反对者**
-- **验收者**
+| 角色 | 职责 | 推荐模型 |
+|------|------|---------|
+| `rd-lead` | 需求锁定、方案对抗、任务拆分、对抗评审 | Claude Opus |
+| `rd-coder` | 编码实现、自测执行、问题修复 | Codex |
+| `rd-ship` | 验证复核、提交交付、报告整理 | GPT-5.4 |
+
+> 推荐把 `rd-lead` 作为对外唯一入口；`rd-coder` 和 `rd-ship` 作为内部执行角色。
 
 ## 安装到 OpenClaw
 
@@ -72,6 +77,25 @@ git clone git@github.com:ZivYan/feishu-multi-agent.git ~/.openclaw/skills/single
 先做对抗评审，再决定是否提交
 ```
 
+## 阶段路由
+
+```text
+用户 → rd-lead(Claude Opus)
+        ├─ Phase 0-2：锁需求、做方案、拆任务
+        ├─ Phase 3-4：派给 rd-coder(Codex) 编码和自测
+        ├─ Phase 4：交给 rd-ship(GPT-5.4) 复核验证结果
+        ├─ Phase 5：回到 rd-lead 做对抗评审
+        └─ Phase 6：由 rd-ship 输出提交与交付材料
+```
+
+## OpenClaw 中怎么实现
+
+- **最优实现**：配置 `rd-lead`、`rd-coder`、`rd-ship` 三个 agent，各自单独配置 `model.primary`
+- **默认入口**：只把 `rd-lead` 暴露给用户
+- **内部通信**：`rd-lead` 通过 `sessions_send` / `sessions_history` 调用内部角色
+- **冷启动优化**：如果运行时稳定支持 `sessions_spawn`，优先用它拉起内部 session
+- **兼容做法**：如果 `sessions_spawn` 不稳定，就给 `rd-coder`、`rd-ship` 各保留一个内部群聊
+
 ## 阅读顺序
 
 1. `INDEX.md`：文档索引
@@ -82,7 +106,7 @@ git clone git@github.com:ZivYan/feishu-multi-agent.git ~/.openclaw/skills/single
 6. `05-feishu-doc.md`：Phase 3 原子开发
 7. `06-feishu-chat-management.md`：Phase 4 自测验证
 8. `07-feishu-message-format.md`：Phase 5 对抗评审
-9. `10-setup-wizard.md`：端到端执行清单
+9. `10-setup-wizard.md`：端到端执行清单与角色路由
 
 ## 当前仓库结构
 
@@ -98,6 +122,14 @@ feishu-multi-agent/
 ```
 
 > `examples/` 与 `skills/` 目前保留为兼容参考；本仓库的主入口是根目录 `SKILL.md` 和 `01-11` 文档。
+
+## 示例配置
+
+参考 `examples/openclaw-config.json`：
+
+- `rd-lead`：绑定用户 DM，负责对外沟通与裁决
+- `rd-coder`：绑定内部编码群聊，负责执行与自测
+- `rd-ship`：绑定内部交付群聊，负责复核与交付产物
 
 ## 最小验证命令
 
