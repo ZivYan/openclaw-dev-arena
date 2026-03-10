@@ -7,16 +7,16 @@
 一套完整的方案，让你用**飞书群聊**作为多个 AI Agent 的独立通信频道，实现：
 
 - 🤖 **一个飞书 Bot → 多个独立 Agent**（每个群聊绑定一个 Agent）
-- 📡 **Agent 间通信**（Agent A 可以给 Agent B 发消息、查状态）
-- 📝 **飞书文档读写**（通过 API 创建/编辑飞书文档）
-- 💬 **飞书群聊管理**（创建群、拉人、改名）
-- 🎯 **DM 路由**（不同用户私信 Bot → 路由到不同 Agent）
+- ⚔️ **对抗式技术方案设计**（arch-alpha vs arch-beta 独立提案 + rebuttal）
+- 📡 **Agent 间通信**（coder 驱动 arch-alpha/beta 对抗）
+- 📝 **飞书文档归档**（技术方案 + 提测报告自动写入 Wiki）
+- 🚀 **自动 MR 提交**（开发完成后自动创建 Codebase MR）
 
 ## 适合谁
 
 - 使用 OpenClaw 的开发者
 - 想用飞书作为 AI Agent 交互界面的团队
-- 需要多 Agent 协作系统的个人
+- 需要对抗式研发流程的个人开发者
 
 ## ⚠️ 项目维护（重要）
 
@@ -34,7 +34,7 @@
 
 ```
 feishu-multi-agent/
-├── README.md                     # 本文件
+├── README.md                     # 项目介绍 + 快速开始
 ├── 01-architecture.md            # 整体架构设计
 ├── 02-feishu-setup.md            # 飞书应用配置
 ├── 03-agent-binding.md           # Agent 绑定与路由
@@ -49,19 +49,24 @@ feishu-multi-agent/
 ├── scripts/
 │   └── create_agent.py           # 一键创建功能 Agent 脚本
 ├── examples/
+│   ├── coder-agent/              # 研发主驱动 Agent 模板（8 Phase 全流程）
+│   ├── arch-alpha-agent/         # 技术方案架构师模板（守正）
+│   ├── arch-beta-agent/          # 技术方案挑战者模板（破局）
+│   ├── momo-agent/               # 协调者 Agent 模板
 │   ├── openclaw-config.json      # 示例配置（脱敏）
 │   ├── agent-soul-template.md    # Agent SOUL.md 模板
 │   └── agent-identity-template.md # Agent IDENTITY.md 模板
 ├── SKILL.md                      # OpenClaw Skill 入口（自动加载）
 └── skills/
+    ├── dev-workflow/SKILL.md     # 标准研发流程（8 Phase 对抗式）
     ├── agent-comm/SKILL.md       # 跨 Agent 通信 Skill
     ├── feishu-chat/SKILL.md      # 飞书群聊管理 Skill
     ├── feishu-doc-writer/        # 飞书文档写作 Skill
     │   ├── SKILL.md
     │   └── references/
-    │       ├── feishu-message-format.md
-    │       └── perm-fallback.md
-    └── delegate-agent/SKILL.md   # 任务委派 Skill（通用化版本）
+    ├── delegate-agent/SKILL.md   # 任务委派 Skill
+    ├── config-update/            # 配置安全编辑 Skill
+    └── maintenance/              # 项目维护 Skill
 ```
 
 ## 快速开始

@@ -2,15 +2,15 @@
 name: feishu-multi-agent
 description: |
   飞书多 Agent 系统搭建指南。当用户要求创建新的功能 Agent、配置飞书群聊绑定、
-  搭建多 Agent 协作系统时激活此 skill。
-  触发词：创建 agent、新建 agent、添加 agent、create agent、多 agent、飞书绑定。
+  搭建多 Agent 协作系统、部署对抗式研发流程时激活此 skill。
+  触发词：创建 agent、新建 agent、添加 agent、create agent、多 agent、飞书绑定、对抗式研发、部署 coder。
 ---
 
 # 飞书多 Agent 系统
 
 ## 你要做什么
 
-帮用户搭建「一个飞书 Bot → 多个独立 AI Agent」的系统。每个 Agent 绑定一个飞书群聊，互相独立，可以通信。
+帮用户搭建「一个飞书 Bot → 多个独立 AI Agent」的系统。核心场景是**对抗式研发流程**：coder（研发主驱动）+ arch-alpha（守正）+ arch-beta（破局）三个 Agent 协作。
 
 ## 读取顺序（严格按顺序）
 
@@ -19,7 +19,7 @@ description: |
 read("INDEX.md")       # 文档索引
 read("01-architecture.md")  # 架构设计
 ```
-读完你会知道：binding、session、agent 间通信的概念。
+读完你会知道：binding、session、agent 间通信、对抗式方案设计的概念。
 
 **第二步：收集用户信息**
 ```
@@ -28,12 +28,20 @@ read("examples/PLACEHOLDERS.md")
 ```
 读完按 Phase 1 的问卷向用户收集信息。`PLACEHOLDERS.md` 列出了所有需要用户提供的字段。不要跳过任何问题。
 
+额外需要收集：
+- **飞书 Wiki Space ID** 和 **目录 Token**（用于技术方案和提测报告归档）
+- **Codebase 仓库信息**（用于自动创建 MR）
+
 **第三步：执行创建**
-用户回答完问题后，运行创建脚本：
+用户回答完问题后，运行创建脚本（需要创建三个 Agent）：
 ```
 read("scripts/create_agent.py")
-exec("python3 scripts/create_agent.py --agent-id xxx --role xxx ...")
+exec("python3 scripts/create_agent.py --agent-id coder --preset coder ...")
+exec("python3 scripts/create_agent.py --agent-id arch-alpha --preset arch-alpha ...")
+exec("python3 scripts/create_agent.py --agent-id arch-beta --preset arch-beta ...")
 ```
+
+创建完成后，编辑 coder 的 `TOOLS.md`，填入 arch-alpha/beta 群聊 ID、Wiki 配置、Codebase 配置。
 
 **第四步：按需深入**
 - 用户问飞书权限 → `read("02-feishu-setup.md")`
@@ -44,14 +52,16 @@ exec("python3 scripts/create_agent.py --agent-id xxx --role xxx ...")
 - 用户问消息格式 → `read("07-feishu-message-format.md")`
 - 用户问 skill 组织 → `read("08-skill-organization.md")`
 - 用户问最佳实践 → `read("09-best-practices.md")`
+- 用户问研发流程 → `read("skills/dev-workflow/SKILL.md")`
 
 ## ⚠️ 关键注意事项
 
 1. **不要一次读所有文件** — 按需读取，节省上下文
 2. **不要跳过信息收集** — 缺少 app_id/open_id 后面全部会失败
-3. **修改 openclaw.json 必须包含所有 Agent** — agents.list 是整体替换，遗漏 = 丢失
-4. **创建群聊后必须注册** — 加 binding + groups 配置 + 重启 gateway
-5. **Bot 创建的文档必须授权** — 否则用户看不到
+3. **三个 Agent 必须同时部署** — coder + arch-alpha + arch-beta 缺一不可
+4. **修改 openclaw.json 必须包含所有 Agent** — agents.list 是整体替换，遗漏 = 丢失
+5. **创建群聊后必须注册** — 加 binding + groups 配置 + 重启 gateway
+6. **Bot 创建的文档必须授权** — 否则用户看不到
 
 ## 🔧 项目维护（仅供维护者）
 
