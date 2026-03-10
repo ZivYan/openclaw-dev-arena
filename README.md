@@ -46,9 +46,10 @@
                          │
           ┌──────────────┼──────────────┐
           │              │              │
-     群聊「开发」   群聊「交易」   群聊「情报」
+     群聊「开发」   群聊「方案A」  群聊「方案B」
           │              │              │
-      Coder Agent   Trader Agent   Scout Agent
+      Coder Agent   arch-alpha     arch-beta
+    (研发主驱动)     (守正/提案)    (破局/rebuttal)
 ```
 
 ### 核心能力
@@ -135,7 +136,7 @@ python3 scripts/create_agent.py \
 
 ## 命名建议
 
-协调者 Agent 推荐以 **MOMO** 命名（如 `momo`），功能 Agent 按职责正常命名（`coder`、`trader`、`scout` 等）。系统支持多个 MOMO 实例（peer 关系）。
+协调者 Agent 推荐以 **MOMO** 命名（如 `momo`），功能 Agent 按职责正常命名（`coder`、`writer`、`analyst` 等）。系统支持多个 MOMO 实例（peer 关系）。
 
 这不是强制要求，只是一个小小的偏好建议 🦞
 
@@ -144,11 +145,11 @@ python3 scripts/create_agent.py \
 | 角色 | 模板 | 工具权限 | 适合场景 |
 |------|------|---------|---------|
 | **momo** | `momo-agent` | 协调权限（sessions_*, gateway） | 协调者（支持多实例 peer） |
-| **coder** | `coder-agent` | 代码执行、文件读写 | 开发、调试 |
-| **trader** | — | 代码执行、定时任务 | 交易分析 |
-| **scout** | — | 只读、网页搜索 | 信息搜索 |
-| **tutor** | — | 只读、网页搜索 | 学习辅导 |
-| **butler** | — | 代码执行、定时任务、浏览器 | 日程、生活 |
+| **coder** | `coder-agent` | 代码执行、文件读写、sessions_*、飞书文档 | 研发主驱动（8 Phase 全流程） |
+| **arch-alpha** | `arch-alpha-agent` | 只读、搜索 | 技术方案架构师（守正） |
+| **arch-beta** | `arch-beta-agent` | 只读、搜索 | 技术方案挑战者（破局） |
+| **writer** | — | 只读、飞书文档 | 文案、报告 |
+| **analyst** | — | 代码执行、飞书文档 | 数据分析 |
 
 > 有模板的 preset（main/coder）使用 `create_agent.py --preset` 时会自动复制 `examples/` 中的完整配置文件。
 

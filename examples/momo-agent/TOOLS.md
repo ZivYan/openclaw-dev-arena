@@ -13,25 +13,23 @@
 |-------|---------|------|
 | momo | — | 协调者 |
 | coder | `oc_你的群聊ID` | 开发助手 |
-| trader | `oc_你的群聊ID` | 交易助手 |
-| scout | `oc_你的群聊ID` | 情报助手 |
-| tutor | `oc_你的群聊ID` | 学习助手 |
-| butler | `oc_你的群聊ID` | 生活助手 |
+| writer | `oc_你的群聊ID` | 写作助手 |
+| analyst | `oc_你的群聊ID` | 分析助手 |
 
 ## 工具权限矩阵
 
-| 工具 | momo | coder | trader | scout | tutor | butler |
-|------|------|-------|--------|-------|-------|--------|
-| exec | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ |
-| read/write/edit | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ |
-| message | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| web_search | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| cron | ✅ | ❌ | ✅ | ❌ | ❌ | ✅ |
-| browser | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ |
-| sessions_* | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| gateway | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| 工具 | momo | coder | writer | analyst |
+|------|------|-------|--------|---------|
+| exec | ✅ | ✅ | ❌ | ✅ |
+| read/write/edit | ✅ | ✅ | ❌ | ✅ |
+| message | ✅ | ✅ | ✅ | ✅ |
+| web_search | ✅ | ✅ | ✅ | ✅ |
+| feishu_doc | ✅ | ✅ | ✅ | ✅ |
+| browser | ✅ | ✅ | ❌ | ❌ |
+| sessions_* | ✅ | ❌ | ❌ | ❌ |
+| gateway | ✅ | ❌ | ❌ | ❌ |
 
-> 设计原则：gateway/sessions 仅 main 可用；coder 专注编码；scout/tutor 只读
+> 设计原则：gateway/sessions 仅 main 可用；coder 专注编码；writer 专注写作
 
 ## 定时任务
 

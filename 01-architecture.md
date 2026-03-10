@@ -7,11 +7,9 @@
 ```
 飞书 Bot (一个应用)
     │
-    ├── 群聊 A → Agent: trader (交易助手)
-    ├── 群聊 B → Agent: coder  (开发助手)
-    ├── 群聊 C → Agent: scout  (情报助手)
-    ├── 群聊 D → Agent: tutor  (学习助手)
-    ├── 群聊 E → Agent: butler (生活助手)
+    ├── 群聊「开发」  → Agent: coder      (研发主驱动)
+    ├── 群聊「方案A」 → Agent: arch-alpha (技术方案/守正)
+    ├── 群聊「方案B」 → Agent: arch-beta  (技术方案/破局)
     │
     ├── DM 用户 A → Agent: main   (主助手)
     └── DM 用户 B → Agent: user-assistant  (用户B的专属助手)
@@ -43,7 +41,7 @@ Session Key 格式：`agent:{agent_id}:{channel}:{peer_kind}:{peer_id}`
 Agent 之间通过 `sessions_send` 工具通信：
 
 ```
-Agent A (trader) ──sessions_send──► Agent B (coder)
+coder ──sessions_send──► arch-alpha / arch-beta
                                         │
                                     处理任务
                                         │
@@ -55,8 +53,8 @@ Agent A (trader) ──sessions_send──► Agent B (coder)
 每个 Agent 可以配置独立的工具白名单/黑名单：
 
 - 协调者 Agent（如 MOMO）: 拥有所有权限（gateway、browser、cron...）
-- 只读 Agent（如 scout）: 仅 read、web_search、message
-- 编码 Agent（如 coder）: exec、read、write、edit
+- 编码 Agent（如 coder）: exec、read、write、edit、sessions_*、feishu_doc
+- 方案 Agent（如 arch-alpha/beta）: read、web_search（只读）
 - 跨 Agent 通信: sessions_list、sessions_history、sessions_send
 
 ## 架构优势
@@ -93,10 +91,8 @@ Agent 处理（读 SOUL.md → 调用工具 → 生成回复）
 | Agent | 职责 | 模型建议 | 工具权限 |
 |-------|------|---------|---------|
 | momo | 协调调度、系统管理 | 最强模型 | 全部 |
-| coder | 代码开发、调试 | 代码能力强的模型 | exec, read, write, edit |
-| trader | 交易分析、监控 | 通用模型 | exec, read, write, cron |
-| scout | 信息搜索、情报 | 通用模型 | read, web_search (只读) |
-| tutor | 学习辅导 | 通用模型 | read, web_search (只读) |
-| butler | 生活管理 | 通用模型 | exec, read, cron, browser |
+| coder | 研发主驱动（8 Phase 全流程） | 代码能力强的模型 | exec, read, write, edit, sessions_*, feishu_doc |
+| arch-alpha | 技术方案架构师（守正） | 通用模型 | read, web_search（只读） |
+| arch-beta | 技术方案挑战者（破局） | 通用模型 | read, web_search（只读） |
 
 > 实际 Agent 数量和分工根据需求调整，以上仅为参考。

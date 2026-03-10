@@ -16,7 +16,7 @@
 - ❌ 服务器 IP、内网域名
 - ❌ **具体模型 ID**（如 `provider/model-name`、匿名代号等，示例中用 `<provider/model_id>` 占位）
 - ❌ **内部事故记录**（具体日期、事故细节属于内部运维信息）
-- ❌ **内部 Agent 名称用于非示例场景**（示例中用 `<agent_id>` 占位，教程中的通用角色名如 coder/trader 可保留）
+- ❌ **内部 Agent 名称用于非示例场景**（示例中用 `<agent_id>` 占位，教程中的通用角色名如 coder/writer 可保留）
 
 **脱敏检查脚本**（必须运行）：
 ```bash
@@ -54,7 +54,7 @@ python3 scripts/check_sensitive.py --path . --strict
 
 - **用占位符替代真实值**：路径用 `<workspace_path>`，模型用 `<provider/model_id>`，Agent 用 `<agent_id>`
 - **描述通用风险而非具体事故**：用"config.patch 对数组整体替换可能导致数据丢失"，不要写"2026-02-27 丢失了所有 Agent"
-- **教程角色名可保留**：coder、trader、scout 等作为示例角色是通用的，但不要暴露真实 Agent 的具体配置
+- **教程角色名可保留**：coder、writer、analyst 等作为示例角色是通用的，但不要暴露真实 Agent 的具体配置
 - **Skill 要面向所有 OpenClaw 用户**：不假设用户使用特定模型、特定 provider 或特定 Agent 架构
 - **自查清单**：写完后问自己"一个完全不了解我们团队的开发者，看到这个内容会觉得奇怪吗？"
 

@@ -102,9 +102,9 @@
         }
       },
       {
-        "id": "scout",
-        "name": "Scout",
-        "workspace": "/home/user/.openclaw/workspace-scout",
+        "id": "arch-alpha",
+        "name": "守正",
+        "workspace": "/home/user/.openclaw/workspace-arch-alpha",
         "model": {
           "primary": "your-provider/your-model-id"
         },
@@ -115,13 +115,23 @@
             "web_search",
             "web_fetch",
             "session_status"
-          ],
-          "deny": [
-            "exec",
-            "write",
-            "edit",
-            "browser",
-            "gateway"
+          ]
+        }
+      },
+      {
+        "id": "arch-beta",
+        "name": "破局",
+        "workspace": "/home/user/.openclaw/workspace-arch-beta",
+        "model": {
+          "primary": "your-provider/your-model-id"
+        },
+        "tools": {
+          "allow": [
+            "read",
+            "message",
+            "web_search",
+            "web_fetch",
+            "session_status"
           ]
         }
       },
@@ -197,13 +207,24 @@
       }
     },
     {
-      "agentId": "scout",
+      "agentId": "arch-alpha",
       "match": {
         "channel": "feishu",
         "accountId": "default",
         "peer": {
           "kind": "group",
-          "id": "oc_SCOUT_CHAT_ID"
+          "id": "oc_ARCH_ALPHA_CHAT_ID"
+        }
+      }
+    },
+    {
+      "agentId": "arch-beta",
+      "match": {
+        "channel": "feishu",
+        "accountId": "default",
+        "peer": {
+          "kind": "group",
+          "id": "oc_ARCH_BETA_CHAT_ID"
         }
       }
     },
@@ -242,7 +263,11 @@
           "enabled": true,
           "requireMention": false
         },
-        "oc_SCOUT_CHAT_ID": {
+        "oc_ARCH_ALPHA_CHAT_ID": {
+          "enabled": true,
+          "requireMention": false
+        },
+        "oc_ARCH_BETA_CHAT_ID": {
           "enabled": true,
           "requireMention": false
         },

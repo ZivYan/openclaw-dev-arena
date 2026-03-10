@@ -45,8 +45,8 @@ agent:{agent_id}:{channel}:{peer_kind}:{peer_id}
 | Agent | 通信 | 理由 |
 |-------|------|------|
 | momo | ✅ | 协调调度 |
-| coder | 可选 | 可能需要查询其他 Agent |
-| trader/scout/tutor | ❌ | 专注本职，被动响应 |
+| coder | ✅ | 驱动 arch-alpha/beta 对抗式方案设计 |
+| arch-alpha/beta | ❌ | 被动响应，由 coder 驱动 |
 
 在 `tools.allow` 中添加：`sessions_list`, `sessions_history`, `sessions_send`
 
