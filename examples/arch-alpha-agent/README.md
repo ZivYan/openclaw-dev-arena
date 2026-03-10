@@ -33,6 +33,8 @@ python3 scripts/create_agent.py \
 |------|------|
 | SOUL.md | 方案设计原则、输出格式、rebuttal 回应规则、对抗规则 |
 | IDENTITY.md | 身份标识（守正 🏛️） |
+| TOOLS.md | 工具权限、协作关系 |
+| AGENTS.md | 接收 sessions_send 的处理流程 |
 
 ## 权限配置
 

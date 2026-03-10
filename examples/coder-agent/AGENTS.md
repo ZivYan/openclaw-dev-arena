@@ -19,9 +19,9 @@
 | message | 群聊消息 |
 | web_search/web_fetch | 搜索技术文档 |
 | session_status | 查看会话状态 |
+| browser | 浏览器操作 |
 | sessions_list/send/history | 跨 Agent 通信（驱动 arch-alpha/beta） |
 | feishu_doc/feishu_perm | 飞书文档归档 |
-| codebase MR 工具 | 创建 Codebase Merge Request |
 
 ## 协作的 Agent
 

@@ -23,9 +23,9 @@
 
 | Agent | 群聊 ID | 关系 |
 |-------|---------|------|
-| coder | `oc_你的群聊ID` | 本 agent（研发主驱动） |
-| arch-alpha | `oc_你的群聊ID` | 方案架构师（守正） |
-| arch-beta | `oc_你的群聊ID` | 方案挑战者（破局） |
+| coder | `oc_CODER_CHAT_ID` | 本 agent（研发主驱动） |
+| arch-alpha | `oc_ARCH_ALPHA_CHAT_ID` | 方案架构师（守正） |
+| arch-beta | `oc_ARCH_BETA_CHAT_ID` | 方案挑战者（破局） |
 
 ## 飞书文档配置
 
