@@ -413,14 +413,21 @@ def main():
             template_dir = None  # 找不到就 fallback 到自动生成
 
     if template_dir:
-        # 复制模板文件（不覆盖已存在的文件）
+        # 复制模板文件和子目录（不覆盖已存在的文件/目录）
         copied = []
-        for src_file in template_dir.iterdir():
-            if src_file.is_file() and src_file.suffix == ".md":
-                dst_file = ws / src_file.name
-                if not dst_file.exists():
-                    shutil.copy2(src_file, dst_file)
-                    copied.append(src_file.name)
+        for src_item in template_dir.iterdir():
+            if src_item.name == "README.md":
+                continue  # README 是给项目看的，不需要复制到 workspace
+            dst_item = ws / src_item.name
+            if src_item.is_file() and src_item.suffix == ".md":
+                if not dst_item.exists():
+                    shutil.copy2(src_item, dst_item)
+                    copied.append(src_item.name)
+            elif src_item.is_dir():
+                # 递归复制子目录（如 skills/）
+                if not dst_item.exists():
+                    shutil.copytree(src_item, dst_item)
+                    copied.append(f"{src_item.name}/")
         print(f"✅ 从模板 {preset['template']} 复制: {', '.join(copied) or '(已存在，跳过)'}")
     else:
         create_identity(ws, args.agent_id, agent_name, args.role, args.emoji, args.user_name)

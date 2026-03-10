@@ -32,15 +32,18 @@ mkdir -p ~/.openclaw/workspace-coder/memory
 # 5. 创建 Agent（或手动添加到 openclaw.json）
 python3 scripts/create_agent.py \
   --agent-id coder --agent-name "Coder" --preset coder \
+  --role "研发主驱动" --user-name "YourName" \
   --app-id "cli_xxx" --app-secret "xxx" --user-open-id "ou_xxx"
 
 # 6. 同时创建 arch-alpha 和 arch-beta
 python3 scripts/create_agent.py \
   --agent-id arch-alpha --preset arch-alpha \
+  --role "技术方案架构师" --user-name "YourName" \
   --app-id "cli_xxx" --app-secret "xxx" --user-open-id "ou_xxx"
 
 python3 scripts/create_agent.py \
   --agent-id arch-beta --preset arch-beta \
+  --role "技术方案挑战者" --user-name "YourName" \
   --app-id "cli_xxx" --app-secret "xxx" --user-open-id "ou_xxx"
 
 # 7. 重启

@@ -24,6 +24,7 @@ arch-alpha 由 coder 通过 `sessions_send` 驱动，不需要用户直接交互
 # 使用 create_agent.py 自动创建
 python3 scripts/create_agent.py \
   --agent-id arch-alpha --preset arch-alpha \
+  --role "技术方案架构师" --user-name "YourName" \
   --app-id "cli_xxx" --app-secret "xxx" --user-open-id "ou_xxx"
 ```
 

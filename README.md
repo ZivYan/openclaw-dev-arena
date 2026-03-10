@@ -128,18 +128,21 @@ Phase 7  提测交付（飞书文档归档）
 # 1. 创建 coder（研发主驱动）
 python3 scripts/create_agent.py \
   --agent-id coder --preset coder \
+  --role "研发主驱动" --user-name "<YOUR_NAME>" \
   --app-id "<APP_ID>" --app-secret "<APP_SECRET>" \
   --user-open-id "ou_<YOUR_OPEN_ID>"
 
 # 2. 创建 arch-alpha（技术方案/守正）
 python3 scripts/create_agent.py \
   --agent-id arch-alpha --preset arch-alpha \
+  --role "技术方案架构师" --user-name "<YOUR_NAME>" \
   --app-id "<APP_ID>" --app-secret "<APP_SECRET>" \
   --user-open-id "ou_<YOUR_OPEN_ID>"
 
 # 3. 创建 arch-beta（技术方案/破局）
 python3 scripts/create_agent.py \
   --agent-id arch-beta --preset arch-beta \
+  --role "技术方案挑战者" --user-name "<YOUR_NAME>" \
   --app-id "<APP_ID>" --app-secret "<APP_SECRET>" \
   --user-open-id "ou_<YOUR_OPEN_ID>"
 ```

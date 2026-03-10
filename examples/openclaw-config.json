@@ -70,7 +70,16 @@
           "every": "30m",
           "target": "last"
         },
-        "name": "MOMO"
+        "name": "MOMO",
+        "tools": {
+          "allow": [
+            "exec", "read", "write", "edit",
+            "message", "web_search", "web_fetch", "session_status",
+            "cron", "browser", "gateway",
+            "sessions_list", "sessions_history", "sessions_send", "sessions_spawn",
+            "feishu_doc", "feishu_perm"
+          ]
+        }
       },
       {
         "id": "coder",
