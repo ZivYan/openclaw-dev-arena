@@ -1,5 +1,5 @@
 {
-  "_comment": "OpenClaw 飞书多 Agent 示例配置 — 替换所有 <YOUR_xxx> 和 ou_YOUR_xxx 占位符",
+  "_comment": "OpenClaw Dev Arena 示例配置 — 替换所有 <YOUR_xxx> 和 ou_YOUR_xxx 占位符",
   "models": {
     "mode": "merge",
     "providers": {

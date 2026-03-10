@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-创建飞书多 Agent 子 Agent 的完整脚本。
+创建对抗式研发流子 Agent 的完整脚本。
 
 用法:
   python3 create_agent.py \
@@ -363,7 +363,7 @@ def update_openclaw_config(config_path: Path, agent_id: str, agent_name: str,
 
 
 def main():
-    parser = argparse.ArgumentParser(description="创建飞书多 Agent 子 Agent")
+    parser = argparse.ArgumentParser(description="创建对抗式研发流子 Agent")
     parser.add_argument("--agent-id", required=True, help="Agent ID（英文小写，如 coder）")
     parser.add_argument("--agent-name", help="Agent 显示名称（如 Coder），默认取 agent-id 首字母大写")
     parser.add_argument("--role", required=True, help="角色描述（如 '代码开发助手'）")
