@@ -1,5 +1,5 @@
 ---
-name: feishu-multi-agent
+name: openclaw-dev-arena
 description: |
   飞书多 Agent 系统搭建指南。当用户要求创建新的功能 Agent、配置飞书群聊绑定、
   搭建多 Agent 协作系统、部署对抗式研发流程时激活此 skill。

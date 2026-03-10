@@ -1,6 +1,6 @@
-# 飞书多 Agent 协作方案
+# OpenClaw Dev Arena
 
-基于 OpenClaw 的飞书多 Agent 系统设计与实现指南。
+对抗式研发工作流 — coder × arch-alpha × arch-beta，基于 OpenClaw 构建。
 
 ## 这是什么
 
@@ -33,7 +33,7 @@
 ## 目录结构
 
 ```
-feishu-multi-agent/
+openclaw-dev-arena/
 ├── README.md                     # 项目介绍 + 快速开始
 ├── 01-architecture.md            # 整体架构设计
 ├── 02-feishu-setup.md            # 飞书应用配置

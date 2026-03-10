@@ -1,6 +1,6 @@
-# 🦞 飞书多 Agent 协作方案
+# 🦞 OpenClaw Dev Arena
 
-> 基于 [OpenClaw](https://github.com/openclaw/openclaw) 的飞书多 Agent 系统设计与实现。
+> 对抗式研发工作流 — coder × arch-alpha × arch-beta，基于 [OpenClaw](https://github.com/openclaw/openclaw) 构建。
 
 ## 🎯 项目定位
 
@@ -214,7 +214,7 @@ coder 发送需求 brief
 ## 项目结构
 
 ```
-feishu-multi-agent/
+openclaw-dev-arena/
 ├── README.md                     本文件
 ├── INDEX.md                      AI 文档索引
 ├── 01~11 *.md                    详细设计文档

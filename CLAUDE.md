@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**feishu-multi-agent** is an open-source template for deploying multi-agent AI systems on Feishu (Lark) using the OpenClaw framework. It is NOT a standalone application — it provides configuration templates, utility scripts, AI-optimized documentation, and preset Agent personas.
+**openclaw-dev-arena** is an open-source adversarial development workflow template built on the OpenClaw framework. It provides configuration templates, utility scripts, AI-optimized documentation, and preset Agent personas (coder + arch-alpha + arch-beta) for deploying multi-agent AI systems on Feishu (Lark).
 
 Core concept: One Feishu Bot → multiple independent AI Agents, each bound to a dedicated group chat with isolated context, tools, and permissions.
 
