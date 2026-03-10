@@ -76,8 +76,8 @@ print(f'✅ agents: {len(c[\"agents\"][\"list\"])} | bindings: {len(c[\"bindings
 不要给 Agent 不需要的权限：
 
 ```
-scout（搜索型）: read, web_search, message     ✅ 最小权限
-scout（搜索型）: 全部权限                      ❌ 过度授权
+writer（写作型）: read, web_search, feishu_doc, message  ✅ 最小权限
+writer（写作型）: 全部权限                               ❌ 过度授权
 ```
 
 ### 任务委派原则
@@ -140,13 +140,13 @@ coder 反复出错（3次+）→ 才考虑自己做
 
 ### 心跳活跃时间
 
-交易类 Agent 只在交易时段需要心跳：
+部分 Agent 只在特定时段需要心跳：
 
 ```json
 {
   "heartbeat": {
     "every": "60m",
-    "activeHours": { "start": "09:25", "end": "15:05" }
+    "activeHours": { "start": "09:00", "end": "22:00" }
   }
 }
 ```

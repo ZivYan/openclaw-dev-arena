@@ -1,10 +1,10 @@
-# 🦞 飞书多 Agent 协作方案
+# 🦞 OpenClaw Dev Arena
 
-> 基于 [OpenClaw](https://github.com/openclaw/openclaw) 的飞书多 Agent 系统设计与实现。
+> 对抗式研发工作流 — coder × arch-alpha × arch-beta，基于 [OpenClaw](https://github.com/openclaw/openclaw) 构建。
 
 ## 🎯 项目定位
 
-**这个项目是为 AI 写的，也是由 AI 维护的，用于快速创建飞书多 Agent 系统。你可以直接将这个仓库喂给 OpenClaw（小龙虾 🦞），它会自动理解架构并帮你创建多 Agent 系统。**
+**这个项目是为 AI 写的，也是由 AI 维护的，用于快速部署对抗式研发流。你可以直接将这个仓库喂给 OpenClaw（小龙虾 🦞），它会自动理解架构并帮你创建对抗式研发流。**
 
 ### 如何使用本项目
 
@@ -20,15 +20,15 @@
 ```
 
 ```
-帮我部署一个 MOMO 协调者 Agent 和一个 Coder Agent
+帮我部署一套对抗式研发 Agent（coder + arch-alpha + arch-beta）
 ```
 
 ```
-按照 10-setup-wizard.md 引导我完成飞书多 Agent 系统搭建
+按照 10-setup-wizard.md 引导我完成对抗式研发流搭建
 ```
 
 ```
-读一下 examples/coder-agent/，帮我创建一个开发助手
+读一下 examples/coder-agent/，帮我创建一个研发助手
 ```
 
 - **AI-first 文档**：结构化的提示词工程，而非给人看的散文
@@ -41,24 +41,43 @@
 
 用**一个飞书 Bot** 驱动**多个独立 AI Agent**。每个 Agent 绑定一个飞书群聊，拥有独立的身份、记忆、工具权限，Agent 之间可以互相通信协作。
 
+### 核心架构：对抗式研发流程
+
 ```
                     飞书 Bot（一个应用）
                          │
           ┌──────────────┼──────────────┐
           │              │              │
-     群聊「开发」   群聊「交易」   群聊「情报」
+     群聊「开发」   群聊「方案A」  群聊「方案B」
           │              │              │
-      Coder Agent   Trader Agent   Scout Agent
+      Coder Agent   arch-alpha     arch-beta
+    (研发主驱动)     (守正/提案)    (破局/rebuttal)
+```
+
+**Coder** 是研发主驱动者，负责 8 Phase 全流程；**arch-alpha** 和 **arch-beta** 在技术方案阶段进行对抗式设计，通过双方案 + rebuttal 产出最优解。
+
+### 8 Phase 标准研发流程
+
+```
+Phase 0  需求理解          ← 用户确认 ✋
+Phase 1  技术方案（对抗式）   ← 用户确认 ✋
+Phase 2  分支创建 + 任务拆分
+Phase 3  原子开发（逐任务推进，群聊实时通知进度）
+Phase 4  自测验证（编译 + 测试 + 竞态检测 + lint）
+Phase 5  Code Review（P0-P3 优先级自审）
+Phase 6  提交 MR           ← 用户确认 ✋
+Phase 7  提测交付（飞书文档归档）
 ```
 
 ### 核心能力
 
 - 🤖 **一 Bot 多 Agent** — 一个飞书应用，多个独立 AI 助手
+- ⚔️ **对抗式方案设计** — 双架构师独立提案 + 互相 rebuttal，对抗直到对齐
 - 💬 **群聊隔离** — 每个 Agent 专属群聊，独立上下文
-- 📡 **Agent 间通信** — 异步派任务、跨 Agent 协作
-- 📝 **飞书文档** — 创建和编辑飞书文档（支持 MD 导入）
-- 🔐 **权限隔离** — 每个 Agent 独立工具白名单
-- 🕐 **定时任务** — 心跳监控、定时推送
+- 📡 **Agent 间通信** — coder 通过 sessions_send 驱动 arch-alpha/beta 对抗
+- 📝 **飞书文档归档** — 技术方案、提测报告自动写入个人 Wiki
+- 🚀 **自动创建 MR** — 开发完成后自动创建 Codebase Merge Request
+- 🌿 **自动分支管理** — 未指定分支时从 master 自动拉取 `feat/<关键词>-<日期>`
 
 ## 快速开始
 
@@ -101,17 +120,36 @@
 
 重启 Gateway，给 Bot 发消息验证。
 
-### Step 3：扩展为多 Agent
+### Step 3：部署对抗式研发 Agent
 
-**脚本自动创建：**
+**一键创建三个 Agent：**
+
 ```bash
+# 1. 创建 coder（研发主驱动）
 python3 scripts/create_agent.py \
   --agent-id coder --preset coder \
+  --role "研发主驱动" --user-name "<YOUR_NAME>" \
+  --app-id "<APP_ID>" --app-secret "<APP_SECRET>" \
+  --user-open-id "ou_<YOUR_OPEN_ID>"
+
+# 2. 创建 arch-alpha（技术方案/守正）
+python3 scripts/create_agent.py \
+  --agent-id arch-alpha --preset arch-alpha \
+  --role "技术方案架构师" --user-name "<YOUR_NAME>" \
+  --app-id "<APP_ID>" --app-secret "<APP_SECRET>" \
+  --user-open-id "ou_<YOUR_OPEN_ID>"
+
+# 3. 创建 arch-beta（技术方案/破局）
+python3 scripts/create_agent.py \
+  --agent-id arch-beta --preset arch-beta \
+  --role "技术方案挑战者" --user-name "<YOUR_NAME>" \
   --app-id "<APP_ID>" --app-secret "<APP_SECRET>" \
   --user-open-id "ou_<YOUR_OPEN_ID>"
 ```
 
-自动完成：创建工作目录 → 生成身份文件 → 建群 → 更新配置。
+每个脚本自动完成：创建工作目录 → 生成身份文件 → 建群 → 更新配置。
+
+部署后编辑 coder 的 `TOOLS.md`，填入飞书 Wiki 目录 Token 和 Codebase 仓库信息。
 
 手动方式见 [03-agent-binding.md](03-agent-binding.md)。
 
@@ -131,26 +169,34 @@ python3 scripts/create_agent.py \
 
 ### Agent 间通信
 
-通过 `sessions_send` 异步委派，详见 [04-agent-communication.md](04-agent-communication.md)。
+coder 通过 `sessions_send` 驱动 arch-alpha/beta 的对抗式方案设计。详见 [04-agent-communication.md](04-agent-communication.md)。
 
-## 命名建议
+### 对抗式方案设计流程
 
-协调者 Agent 推荐以 **MOMO** 命名（如 `momo`），功能 Agent 按职责正常命名（`coder`、`trader`、`scout` 等）。系统支持多个 MOMO 实例（peer 关系）。
-
-这不是强制要求，只是一个小小的偏好建议 🦞
+```
+coder 发送需求 brief
+    │
+    ├─ sessions_send → arch-alpha → 方案 A
+    │
+    ├─ sessions_send → arch-beta（附方案 A）→ 方案 B + rebuttal
+    │
+    ├─ sessions_send → arch-alpha（附 rebuttal）→ 回应
+    │
+    ├─ 继续对抗直到核心架构对齐（最多 3 轮额外）
+    │
+    └─ coder 汇总裁决 → 飞书文档归档 → 用户确认
+```
 
 ## 预设角色
 
 | 角色 | 模板 | 工具权限 | 适合场景 |
 |------|------|---------|---------|
-| **momo** | `momo-agent` | 协调权限（sessions_*, gateway） | 协调者（支持多实例 peer） |
-| **coder** | `coder-agent` | 代码执行、文件读写 | 开发、调试 |
-| **trader** | — | 代码执行、定时任务 | 交易分析 |
-| **scout** | — | 只读、网页搜索 | 信息搜索 |
-| **tutor** | — | 只读、网页搜索 | 学习辅导 |
-| **butler** | — | 代码执行、定时任务、浏览器 | 日程、生活 |
+| **coder** | `coder-agent` | exec, read, write, edit, sessions_*, feishu_doc | 研发主驱动（8 Phase 全流程） |
+| **arch-alpha** | `arch-alpha-agent` | read, web_search（只读） | 技术方案架构师（守正） |
+| **arch-beta** | `arch-beta-agent` | read, web_search（只读） | 技术方案挑战者（破局） |
+| **momo** | `momo-agent` | 全部权限（sessions_*, gateway） | 协调者（可选，多 Agent 场景） |
 
-> 有模板的 preset（main/coder）使用 `create_agent.py --preset` 时会自动复制 `examples/` 中的完整配置文件。
+> 有模板的 preset 使用 `create_agent.py --preset` 时会自动复制 `examples/` 中的完整配置文件。
 
 ## 飞书权限清单
 
@@ -171,18 +217,25 @@ python3 scripts/create_agent.py \
 ## 项目结构
 
 ```
-feishu-multi-agent/
-├── README.md                  本文件
-├── INDEX.md                   AI 文档索引
-├── 01~11 *.md                 详细设计文档
-├── scripts/create_agent.py    一键创建功能 Agent
-├── examples/                  配置模板、Agent 模板
-└── skills/                    可复用 Agent Skills
-    ├── agent-comm/            跨 Agent 通信
-    ├── delegate-agent/        任务委派
-    ├── feishu-chat/           群聊管理
-    ├── feishu-doc-writer/     文档写作
-    └── maintenance/           项目维护
+openclaw-dev-arena/
+├── README.md                     本文件
+├── INDEX.md                      AI 文档索引
+├── 01~11 *.md                    详细设计文档
+├── scripts/create_agent.py       一键创建功能 Agent
+├── examples/
+│   ├── coder-agent/              研发主驱动 Agent 模板（8 Phase 全流程）
+│   ├── arch-alpha-agent/         技术方案架构师模板（守正）
+│   ├── arch-beta-agent/          技术方案挑战者模板（破局）
+│   ├── momo-agent/               协调者 Agent 模板
+│   └── openclaw-config.json      示例配置（脱敏）
+└── skills/
+    ├── dev-workflow/              标准研发流程（8 Phase）
+    ├── agent-comm/                跨 Agent 通信
+    ├── delegate-agent/            任务委派
+    ├── feishu-chat/               群聊管理
+    ├── feishu-doc-writer/         文档写作
+    ├── config-update/             配置安全编辑
+    └── maintenance/               项目维护
 ```
 
 ## 致谢

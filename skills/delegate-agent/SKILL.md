@@ -55,11 +55,9 @@ description: Delegate tasks to agents asynchronously. Triggers on "让XX做", "d
 
 | 任务类型 | Agent |
 |---------|-------|
-| 编码/调试/重构 | coder |
-| 信息搜索/分析 | scout |
-| 交易/数据策略 | trader |
-| 日程/提醒/生活 | butler |
-| 学习/辅导 | tutor |
+| 编码/调试/重构/全流程研发 | coder |
+| 技术方案提案（守正） | arch-alpha |
+| 技术方案挑战（破局） | arch-beta |
 | Gateway/配置 | main（自己做） |
 
 ## 禁止事项

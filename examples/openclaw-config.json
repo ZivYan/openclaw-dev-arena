@@ -1,5 +1,5 @@
 {
-  "_comment": "OpenClaw 飞书多 Agent 示例配置 — 替换所有 <YOUR_xxx> 和 ou_YOUR_xxx 占位符",
+  "_comment": "OpenClaw Dev Arena 示例配置 — 替换所有 <YOUR_xxx> 和 ou_YOUR_xxx 占位符",
   "models": {
     "mode": "merge",
     "providers": {
@@ -70,7 +70,16 @@
           "every": "30m",
           "target": "last"
         },
-        "name": "MOMO"
+        "name": "MOMO",
+        "tools": {
+          "allow": [
+            "exec", "read", "write", "edit",
+            "message", "web_search", "web_fetch", "session_status",
+            "cron", "browser", "gateway",
+            "sessions_list", "sessions_history", "sessions_send", "sessions_spawn",
+            "feishu_doc", "feishu_perm"
+          ]
+        }
       },
       {
         "id": "coder",
@@ -102,9 +111,9 @@
         }
       },
       {
-        "id": "scout",
-        "name": "Scout",
-        "workspace": "/home/user/.openclaw/workspace-scout",
+        "id": "arch-alpha",
+        "name": "守正",
+        "workspace": "/home/user/.openclaw/workspace-arch-alpha",
         "model": {
           "primary": "your-provider/your-model-id"
         },
@@ -115,47 +124,23 @@
             "web_search",
             "web_fetch",
             "session_status"
-          ],
-          "deny": [
-            "exec",
-            "write",
-            "edit",
-            "browser",
-            "gateway"
           ]
         }
       },
       {
-        "id": "assistant",
-        "name": "Assistant",
-        "workspace": "/home/user/.openclaw/workspace-assistant",
+        "id": "arch-beta",
+        "name": "破局",
+        "workspace": "/home/user/.openclaw/workspace-arch-beta",
         "model": {
           "primary": "your-provider/your-model-id"
         },
-        "heartbeat": {
-          "every": "60m",
-          "activeHours": {
-            "start": "09:00",
-            "end": "22:00"
-          },
-          "target": "last"
-        },
         "tools": {
           "allow": [
-            "exec",
             "read",
-            "write",
-            "edit",
             "message",
             "web_search",
             "web_fetch",
-            "session_status",
-            "cron",
-            "feishu_doc",
-            "feishu_perm",
-            "sessions_list",
-            "sessions_history",
-            "sessions_send"
+            "session_status"
           ]
         }
       }
@@ -197,24 +182,24 @@
       }
     },
     {
-      "agentId": "scout",
+      "agentId": "arch-alpha",
       "match": {
         "channel": "feishu",
         "accountId": "default",
         "peer": {
           "kind": "group",
-          "id": "oc_SCOUT_CHAT_ID"
+          "id": "oc_ARCH_ALPHA_CHAT_ID"
         }
       }
     },
     {
-      "agentId": "assistant",
+      "agentId": "arch-beta",
       "match": {
         "channel": "feishu",
         "accountId": "default",
         "peer": {
           "kind": "group",
-          "id": "oc_ASSISTANT_CHAT_ID"
+          "id": "oc_ARCH_BETA_CHAT_ID"
         }
       }
     }
@@ -242,14 +227,13 @@
           "enabled": true,
           "requireMention": false
         },
-        "oc_SCOUT_CHAT_ID": {
+        "oc_ARCH_ALPHA_CHAT_ID": {
           "enabled": true,
           "requireMention": false
         },
-        "oc_ASSISTANT_CHAT_ID": {
+        "oc_ARCH_BETA_CHAT_ID": {
           "enabled": true,
-          "requireMention": false,
-          "groupAllowFrom": "*"
+          "requireMention": false
         }
       },
       "tools": {

@@ -7,10 +7,10 @@ OpenClaw 配置安全编辑工具
   python3 config_edit.py --list
 
   # 修改单个 agent 的模型
-  python3 config_edit.py --set-model trader <provider>/<model>
+  python3 config_edit.py --set-model writer <provider>/<model>
 
   # 批量修改多个 agent 的模型
-  python3 config_edit.py --set-model trader,momo <provider>/<model>
+  python3 config_edit.py --set-model writer,momo <provider>/<model>
 
   # 修改 agent 的心跳
   python3 config_edit.py --set-heartbeat momo 30m

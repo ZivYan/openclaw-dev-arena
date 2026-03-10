@@ -70,12 +70,14 @@ mkdir -p ~/.openclaw/workspace-momo/memory
 ## 架构关系
 
 ```
-  MOMO-A (用户A)    MOMO-B (用户B)     ← peer 协调者
-   ┌──┼──┐          ┌──┼──┐
- coder scout      trader butler        ← 功能 Agent
+  MOMO (协调者)
+   ┌──┼──────────┐
+ coder        arch-alpha
+ (研发主驱动)   arch-beta
+                (对抗式方案设计)
 ```
 
-- 多个 MOMO 实例之间是 **peer 关系**，彼此平等
-- 每个 MOMO 拥有 sessions_* 权限，可协调子 Agent
+- MOMO 可选部署，纯研发场景下 coder 可独立驱动全流程
+- 多 Agent 场景下 MOMO 负责跨 Agent 协调
 - MOMO 只协调，不执行具体任务
 - 子 Agent 失败 → MOMO 优化提示词重新派发，**不接手**

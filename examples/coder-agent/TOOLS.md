@@ -5,9 +5,9 @@
 ## 环境
 
 - **OS:** macOS / Linux
+- **Go:** 1.2x
 - **Python:** 3.x
 - **Node:** vXX.x
-- **包管理:** pip / npm / brew
 
 ## 工作目录
 
@@ -23,13 +23,31 @@
 
 | Agent | 群聊 ID | 关系 |
 |-------|---------|------|
-| momo | — | 协调者（派发任务给你） |
-| coder | `oc_你的群聊ID` | 本 agent |
+| coder | `oc_CODER_CHAT_ID` | 本 agent（研发主驱动） |
+| arch-alpha | `oc_ARCH_ALPHA_CHAT_ID` | 方案架构师（守正） |
+| arch-beta | `oc_ARCH_BETA_CHAT_ID` | 方案挑战者（破局） |
+
+## 飞书文档配置
+
+| 配置项 | 值 |
+|--------|-----|
+| Wiki Space ID | `<YOUR_WIKI_SPACE_ID>` |
+| 文档目录 Token | `<YOUR_WIKI_FOLDER_TOKEN>` |
+
+> 安装时由用户提供个人 Wiki 目录信息。
+
+## Codebase 配置
+
+| 配置项 | 值 |
+|--------|-----|
+| 仓库 | `<YOUR_REPO>` |
+| 默认 Base Branch | master |
 
 ## 注意事项
 
-- Git commit 后不 push，除非明确要求
+- Git commit 后不 push，除非进入 Phase 6
 - 跨 workspace 访问需要在 SOUL.md 中明确授权
+- MR 创建使用 Codebase MCP 工具
 
 ---
 

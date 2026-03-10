@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-创建飞书多 Agent 子 Agent 的完整脚本。
+创建对抗式研发流子 Agent 的完整脚本。
 
 用法:
   python3 create_agent.py \
@@ -25,7 +25,7 @@
   --user-open-id  用户的飞书 open_id（拉入群聊用）
   --model         模型 ID（默认用配置中的 defaults）
   --workspace-base  workspace 基础目录（默认 ~/.openclaw）
-  --preset        预设角色（coder/trader/scout/tutor/butler/writer/analyst）
+  --preset        预设角色（coder/arch-alpha/arch-beta/writer/analyst）
                   有 examples/ 模板的 preset（如 coder）会优先复制完整模板文件
   --tools         逗号分隔的工具列表（覆盖 preset）
   --skip-chat     跳过创建飞书群聊
@@ -62,56 +62,38 @@ PRESETS = {
     },
     "coder": {
         "tools": ["exec", "read", "write", "edit", "message",
-                  "web_search", "web_fetch", "session_status", "browser"],
+                  "web_search", "web_fetch", "session_status", "browser",
+                  "sessions_list", "sessions_history", "sessions_send",
+                  "feishu_doc", "feishu_perm"],
         "template": "coder-agent",  # 指向 examples/coder-agent/
-        "soul_core": "你是一位资深全栈工程师，精通多种编程语言和框架。你的职责是编写高质量代码、调试问题、重构架构。",
+        "soul_core": "你是研发流程的主驱动者。负责从需求到交付的全流程：需求理解、驱动对抗式方案设计、编码实现、自测、Code Review、提交 MR、提测归档。",
         "soul_principles": [
-            "代码质量第一，不留技术债",
-            "先理解需求再动手写代码",
-            "重构优于打补丁",
-            "每次修改都要测试验证",
+            "流程不可跳过，8 个 Phase 按顺序推进",
+            "技术方案通过 arch-alpha 和 arch-beta 对抗产出",
+            "原子化开发，每个任务 ≤ 2h，一个任务一个 commit",
+            "进度透明，每完成一个任务群聊通知详细进度",
         ],
     },
-    "trader": {
-        "tools": ["exec", "read", "write", "edit", "message",
-                  "web_search", "web_fetch", "session_status", "cron"],
-        "soul_core": "你是一位经验丰富的交易分析师，擅长技术分析和基本面分析。你的职责是提供交易决策支持和持仓监控。",
-        "soul_principles": [
-            "止损纪律不可妥协",
-            "数据驱动决策，不拍脑袋",
-            "每笔交易都要有明确的入场理由和止损位",
-            "定期复盘，无论盈亏",
-        ],
-    },
-    "scout": {
+    "arch-alpha": {
         "tools": ["read", "message", "web_search", "web_fetch", "session_status"],
-        "soul_core": "你是一位资深情报分析师，擅长从海量信息中提炼关键洞察。你的职责是搜索、整理和分析信息。",
+        "template": "arch-alpha-agent",  # 指向 examples/arch-alpha-agent/
+        "soul_core": "你是技术方案架构师 A（守正）。为每个研发需求提供独立的技术方案，与 arch-beta 对抗产出最优解。",
         "soul_principles": [
-            "信息准确性第一，不传播未验证信息",
-            "主动发现用户需要但还不知道的信息",
-            "多源交叉验证",
-            "简洁呈现，附带来源链接",
+            "稳健优先，选择经过验证的技术路径",
+            "方案必须涵盖接口设计、数据流、错误处理、兼容性",
+            "承认合理质疑，补充遗漏，用数据反驳不合理部分",
+            "目标是收敛到最优解，不是无限争论",
         ],
     },
-    "tutor": {
+    "arch-beta": {
         "tools": ["read", "message", "web_search", "web_fetch", "session_status"],
-        "soul_core": "你是一位资深教育专家，擅长将复杂概念转化为直觉理解。你的职责是提供个性化学习辅导。",
+        "template": "arch-beta-agent",  # 指向 examples/arch-beta-agent/
+        "soul_core": "你是技术方案挑战者 B（破局）。提供差异化技术方案，对 arch-alpha 的方案进行 rebuttal，通过对抗产出最优解。",
         "soul_principles": [
-            "用费曼学习法：能简单解释才算真懂",
-            "从具体例子入手，再抽象总结",
-            "适时提问引导思考，不直接给答案",
-            "根据学生水平调整难度",
-        ],
-    },
-    "butler": {
-        "tools": ["exec", "read", "message", "web_search", "web_fetch",
-                  "session_status", "cron", "browser"],
-        "soul_core": "你是一位专业私人助理，擅长时间管理和多任务协调。你的职责是统筹日常事务，让用户专注重要的事。",
-        "soul_principles": [
-            "高效执行，减少用户操心",
-            "主动提醒重要事项",
-            "安静时段不打扰",
-            "隐私数据不外泄",
+            "差异化思考，故意选择不同技术路径",
+            "挑战假设，质疑理所当然的选择",
+            "质疑有依据，每个 rebuttal 点有具体技术论据",
+            "目标是收敛到最优解，可以妥协和承认对方优势",
         ],
     },
     "writer": {
@@ -381,7 +363,7 @@ def update_openclaw_config(config_path: Path, agent_id: str, agent_name: str,
 
 
 def main():
-    parser = argparse.ArgumentParser(description="创建飞书多 Agent 子 Agent")
+    parser = argparse.ArgumentParser(description="创建对抗式研发流子 Agent")
     parser.add_argument("--agent-id", required=True, help="Agent ID（英文小写，如 coder）")
     parser.add_argument("--agent-name", help="Agent 显示名称（如 Coder），默认取 agent-id 首字母大写")
     parser.add_argument("--role", required=True, help="角色描述（如 '代码开发助手'）")
@@ -431,14 +413,21 @@ def main():
             template_dir = None  # 找不到就 fallback 到自动生成
 
     if template_dir:
-        # 复制模板文件（不覆盖已存在的文件）
+        # 复制模板文件和子目录（不覆盖已存在的文件/目录）
         copied = []
-        for src_file in template_dir.iterdir():
-            if src_file.is_file() and src_file.suffix == ".md":
-                dst_file = ws / src_file.name
-                if not dst_file.exists():
-                    shutil.copy2(src_file, dst_file)
-                    copied.append(src_file.name)
+        for src_item in template_dir.iterdir():
+            if src_item.name == "README.md":
+                continue  # README 是给项目看的，不需要复制到 workspace
+            dst_item = ws / src_item.name
+            if src_item.is_file() and src_item.suffix == ".md":
+                if not dst_item.exists():
+                    shutil.copy2(src_item, dst_item)
+                    copied.append(src_item.name)
+            elif src_item.is_dir():
+                # 递归复制子目录（如 skills/）
+                if not dst_item.exists():
+                    shutil.copytree(src_item, dst_item)
+                    copied.append(f"{src_item.name}/")
         print(f"✅ 从模板 {preset['template']} 复制: {', '.join(copied) or '(已存在，跳过)'}")
     else:
         create_identity(ws, args.agent_id, agent_name, args.role, args.emoji, args.user_name)

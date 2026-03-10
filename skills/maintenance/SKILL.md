@@ -1,10 +1,10 @@
 # Maintenance Skill
 
-飞书多 Agent 项目维护指南 - 仅供维护 feishu-multi-agent 项目时使用。
+openclaw-dev-arena 项目维护指南 - 仅供维护本项目时使用。
 
 ## 用途
 
-本文档指导如何维护和更新 feishu-multi-agent 开源项目本身。
+本文档指导如何维护和更新 openclaw-dev-arena 开源项目本身。
 
 **何时使用此 skill**：
 - 添加新 Agent 示例到项目
