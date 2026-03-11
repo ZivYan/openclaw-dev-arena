@@ -75,6 +75,27 @@
           "allow": [
             "exec", "read", "write", "edit",
             "message", "web_search", "web_fetch", "session_status",
+            "cron", "browser",
+            "sessions_list", "sessions_history", "sessions_send",
+            "feishu_doc", "feishu_perm", "tts"
+          ]
+        }
+      },
+      {
+        "id": "orchestrator",
+        "name": "Orchestrator",
+        "workspace": "/home/user/.openclaw/workspace-orchestrator",
+        "model": {
+          "primary": "your-provider/your-model-id"
+        },
+        "heartbeat": {
+          "every": "30m",
+          "target": "last"
+        },
+        "tools": {
+          "allow": [
+            "exec", "read", "write", "edit",
+            "message", "web_search", "web_fetch", "session_status",
             "cron", "browser", "gateway",
             "sessions_list", "sessions_history", "sessions_send", "sessions_spawn",
             "feishu_doc", "feishu_perm"
@@ -171,6 +192,17 @@
       }
     },
     {
+      "agentId": "orchestrator",
+      "match": {
+        "channel": "feishu",
+        "accountId": "default",
+        "peer": {
+          "kind": "group",
+          "id": "oc_ORCHESTRATOR_CHAT_ID"
+        }
+      }
+    },
+    {
       "agentId": "coder",
       "match": {
         "channel": "feishu",
@@ -223,6 +255,10 @@
         "ou_YOUR_OPEN_ID"
       ],
       "groups": {
+        "oc_ORCHESTRATOR_CHAT_ID": {
+          "enabled": true,
+          "requireMention": false
+        },
         "oc_CODER_CHAT_ID": {
           "enabled": true,
           "requireMention": false

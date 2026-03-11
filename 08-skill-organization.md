@@ -30,11 +30,18 @@ OpenClaw 按以下顺序扫描 Skill：
 │       └── scripts/
 │           └── run_test.sh
 │
-├── workspace-momo/                  # 协调者 agent (MOMO) workspace
+├── workspace-momo/                  # 私人助手 (MOMO) workspace
 │   └── skills/
-│       ├── agent-comm/              # 跨 Agent 通信（仅 main 和需要通信的 Agent）
+│       ├── agent-comm/              # 跨 Agent 通信（委派研发任务给 orchestrator）
 │       │   └── SKILL.md
-│       └── delegate-coder/          # 任务委派（仅 main）
+│       └── delegate-agent/          # 任务委派
+│           └── SKILL.md
+│
+├── workspace-orchestrator/          # 研发流协调者 workspace
+│   └── skills/
+│       ├── agent-comm/              # 跨 Agent 通信
+│       │   └── SKILL.md
+│       └── delegate-coder/          # 任务委派给 coder
 │           └── SKILL.md
 │
 ├── workspace-coder/                 # coder agent workspace
@@ -81,8 +88,7 @@ OpenClaw 按以下顺序扫描 Skill：
 
 ```
 workspace-coder/references/feishu-message-format.md    # 副本1
-workspace-writer/references/feishu-message-format.md   # 副本2
-workspace-analyst/references/feishu-message-format.md  # 副本3
+workspace-orchestrator/references/feishu-message-format.md  # 副本2
 ...
 ```
 

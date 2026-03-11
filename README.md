@@ -20,7 +20,7 @@
 ```
 
 ```
-帮我部署一套对抗式研发 Agent（coder + arch-alpha + arch-beta）
+帮我部署一套对抗式研发 Agent（momo + orchestrator + coder + arch-alpha + arch-beta）
 ```
 
 ```
@@ -44,17 +44,17 @@
 ### 核心架构：对抗式研发流程
 
 ```
-                    飞书 Bot（一个应用）
-                         │
-          ┌──────────────┼──────────────┐
-          │              │              │
-     群聊「开发」   群聊「方案A」  群聊「方案B」
-          │              │              │
-      Coder Agent   arch-alpha     arch-beta
-    (研发主驱动)     (守正/提案)    (破局/rebuttal)
+                         飞书 Bot（一个应用）
+                              │
+     ┌────────────┬───────────┼───────────┬───────────┐
+     │            │           │           │           │
+  DM 私信    群聊「协调」  群聊「开发」  群聊「方案A」 群聊「方案B」
+     │            │           │           │           │
+   momo     orchestrator    coder     arch-alpha   arch-beta
+ (私人助手)  (研发协调)   (研发主驱动)  (守正/提案)  (破局/rebuttal)
 ```
 
-**Coder** 是研发主驱动者，负责 8 Phase 全流程；**arch-alpha** 和 **arch-beta** 在技术方案阶段进行对抗式设计，通过双方案 + rebuttal 产出最优解。
+**momo** 是用户的私人助手（DM 入口），日常对话和轻量任务直接处理，研发类任务委派给 **orchestrator**。**orchestrator** 负责任务拆解和派发，驱动 **coder** 执行 8 Phase 全流程。**arch-alpha** 和 **arch-beta** 在技术方案阶段进行对抗式设计，通过双方案 + rebuttal 产出最优解。
 
 ### 8 Phase 标准研发流程
 
@@ -74,7 +74,7 @@ Phase 7  提测交付（飞书文档归档）
 - 🤖 **一 Bot 多 Agent** — 一个飞书应用，多个独立 AI 助手
 - ⚔️ **对抗式方案设计** — 双架构师独立提案 + 互相 rebuttal，对抗直到对齐
 - 💬 **群聊隔离** — 每个 Agent 专属群聊，独立上下文
-- 📡 **Agent 间通信** — coder 通过 sessions_send 驱动 arch-alpha/beta 对抗
+- 📡 **Agent 间通信** — momo → orchestrator → coder → arch-alpha/beta 层层协作
 - 📝 **飞书文档归档** — 技术方案、提测报告自动写入个人 Wiki
 - 🚀 **自动创建 MR** — 开发完成后自动创建 Codebase Merge Request
 - 🌿 **自动分支管理** — 未指定分支时从 master 自动拉取 `feat/<关键词>-<日期>`
@@ -112,7 +112,7 @@ Phase 7  提测交付（飞书文档归档）
     }
   },
   "bindings": [{
-    "agentId": "main",
+    "agentId": "momo",
     "match": { "channel": "feishu", "peer": { "kind": "dm", "id": "ou_<YOUR_OPEN_ID>" } }
   }]
 }
@@ -122,24 +122,37 @@ Phase 7  提测交付（飞书文档归档）
 
 ### Step 3：部署对抗式研发 Agent
 
-**一键创建三个 Agent：**
+**一键创建五个 Agent：**
 
 ```bash
-# 1. 创建 coder（研发主驱动）
+# 1. 创建 momo（私人助手，DM 入口）
+python3 scripts/create_agent.py \
+  --agent-id momo --preset momo \
+  --role "私人助手" --user-name "<YOUR_NAME>" \
+  --skip-chat
+
+# 2. 创建 orchestrator（研发流协调者）
+python3 scripts/create_agent.py \
+  --agent-id orchestrator --preset orchestrator \
+  --role "研发流协调者" --user-name "<YOUR_NAME>" \
+  --app-id "<APP_ID>" --app-secret "<APP_SECRET>" \
+  --user-open-id "ou_<YOUR_OPEN_ID>"
+
+# 3. 创建 coder（研发主驱动）
 python3 scripts/create_agent.py \
   --agent-id coder --preset coder \
   --role "研发主驱动" --user-name "<YOUR_NAME>" \
   --app-id "<APP_ID>" --app-secret "<APP_SECRET>" \
   --user-open-id "ou_<YOUR_OPEN_ID>"
 
-# 2. 创建 arch-alpha（技术方案/守正）
+# 4. 创建 arch-alpha（技术方案/守正）
 python3 scripts/create_agent.py \
   --agent-id arch-alpha --preset arch-alpha \
   --role "技术方案架构师" --user-name "<YOUR_NAME>" \
   --app-id "<APP_ID>" --app-secret "<APP_SECRET>" \
   --user-open-id "ou_<YOUR_OPEN_ID>"
 
-# 3. 创建 arch-beta（技术方案/破局）
+# 5. 创建 arch-beta（技术方案/破局）
 python3 scripts/create_agent.py \
   --agent-id arch-beta --preset arch-beta \
   --role "技术方案挑战者" --user-name "<YOUR_NAME>" \
@@ -148,6 +161,8 @@ python3 scripts/create_agent.py \
 ```
 
 每个脚本自动完成：创建工作目录 → 生成身份文件 → 建群 → 更新配置。
+
+> momo 使用 `--skip-chat` 因为它绑定的是 DM 而非群聊，DM binding 需要手动在 `openclaw.json` 中添加。
 
 部署后编辑 coder 的 `TOOLS.md`，填入飞书 Wiki 目录 Token 和 Codebase 仓库信息。
 
@@ -191,10 +206,11 @@ coder 发送需求 brief
 
 | 角色 | 模板 | 工具权限 | 适合场景 |
 |------|------|---------|---------|
+| **momo** | `momo-agent` | exec, read, write, sessions_*, feishu_doc, tts | 私人助手（DM 入口） |
+| **orchestrator** | `orchestrator-agent` | 全部（含 gateway, sessions_spawn） | 研发流协调者 |
 | **coder** | `coder-agent` | exec, read, write, edit, sessions_*, feishu_doc | 研发主驱动（8 Phase 全流程） |
 | **arch-alpha** | `arch-alpha-agent` | read, web_search（只读） | 技术方案架构师（守正） |
 | **arch-beta** | `arch-beta-agent` | read, web_search（只读） | 技术方案挑战者（破局） |
-| **momo** | `momo-agent` | 全部权限（sessions_*, gateway） | 协调者（可选，多 Agent 场景） |
 
 > 有模板的 preset 使用 `create_agent.py --preset` 时会自动复制 `examples/` 中的完整配置文件。
 
@@ -226,7 +242,8 @@ openclaw-dev-arena/
 │   ├── coder-agent/              研发主驱动 Agent 模板（8 Phase 全流程）
 │   ├── arch-alpha-agent/         技术方案架构师模板（守正）
 │   ├── arch-beta-agent/          技术方案挑战者模板（破局）
-│   ├── momo-agent/               协调者 Agent 模板
+│   ├── momo-agent/               私人助手 Agent 模板
+│   ├── orchestrator-agent/       研发流协调者 Agent 模板
 │   └── openclaw-config.json      示例配置（脱敏）
 └── skills/
     ├── dev-workflow/              标准研发流程（8 Phase）

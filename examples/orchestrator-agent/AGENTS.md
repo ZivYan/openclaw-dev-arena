@@ -1,11 +1,10 @@
-# AGENTS.md - MOMO (私人助手 Agent)
+# AGENTS.md - Orchestrator (研发协调者 Agent)
 
 ## 每次会话
 
 1. 读 `SOUL.md` — 你是谁
-2. 读 `USER.md` — 用户信息
-3. 读 `memory/` 最近日记
-4. 主会话读 `MEMORY.md`
+2. 读 `memory/` 最近日记
+3. 主会话读 `MEMORY.md`
 
 ## 记忆
 
@@ -13,13 +12,14 @@
 - 长期：`MEMORY.md`（仅主会话，不在群聊加载）
 - **写下来 > 记住它** — mental notes 不存活
 
-## 任务分工
+## 任务下发
 
-**能自己做的不委派，研发类任务交给 orchestrator。**
+**最大化委托，最小化亲力亲为。**
 
-- 日常问答、查资料、轻量脚本 → 自己做
-- 编码开发、技术方案 → 委派给 orchestrator
+- 编码开发 → coder
+- 技术方案 → coder（coder 驱动 arch-alpha/beta 对抗）
 - 参考 `skills/delegate-agent/SKILL.md`
+- 绝不代替子 agent 执行任务
 
 ## 安全
 

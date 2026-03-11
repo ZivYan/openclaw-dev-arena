@@ -20,7 +20,7 @@
 
 1. **飞书凭证**：App ID、App Secret、Bot 名称
 2. **用户 open_id**（不知道则先给 Bot 发私信，从日志获取）
-3. **Agent 列表**：预设（coder/arch-alpha/arch-beta/writer/analyst）或自定义
+3. **Agent 列表**：预设（momo/orchestrator/coder/arch-alpha/arch-beta）或自定义
 4. **功能需求**：Agent 间通信、飞书文档、群聊管理、定时任务、搜索
 
 ## Step 2: 申请飞书权限
@@ -37,15 +37,43 @@
 
 ### 脚本创建（推荐）
 
+按顺序创建所有 Agent：
+
 ```bash
+# 1. momo（私人助手，DM 绑定，不建群）
 python3 scripts/create_agent.py \
-  --agent-id coder --agent-name "Coder" --preset coder \
+  --agent-id momo --preset momo --role "私人助手" \
+  --user-name "<YOUR_NAME>" --skip-chat
+
+# 2. orchestrator（研发流协调者）
+python3 scripts/create_agent.py \
+  --agent-id orchestrator --preset orchestrator --role "研发流协调者" \
+  --user-name "<YOUR_NAME>" \
+  --app-id "cli_xxx" --app-secret "xxx" --user-open-id "ou_xxx"
+
+# 3. coder（研发主驱动）
+python3 scripts/create_agent.py \
+  --agent-id coder --preset coder --role "研发主驱动" \
+  --user-name "<YOUR_NAME>" \
+  --app-id "cli_xxx" --app-secret "xxx" --user-open-id "ou_xxx"
+
+# 4. arch-alpha（守正）
+python3 scripts/create_agent.py \
+  --agent-id arch-alpha --preset arch-alpha --role "技术方案架构师" \
+  --user-name "<YOUR_NAME>" \
+  --app-id "cli_xxx" --app-secret "xxx" --user-open-id "ou_xxx"
+
+# 5. arch-beta（破局）
+python3 scripts/create_agent.py \
+  --agent-id arch-beta --preset arch-beta --role "技术方案挑战者" \
+  --user-name "<YOUR_NAME>" \
   --app-id "cli_xxx" --app-secret "xxx" --user-open-id "ou_xxx"
 ```
 
 自动完成：创建 workspace → 复制/生成身份文件 → 飞书建群 → 更新配置 → 备份。
 
-> 💡 有 `examples/` 模板的 preset（如 coder）会自动复制完整的 SOUL.md、AGENTS.md 等文件，开箱即用。
+> 💡 momo 使用 `--skip-chat` 因为它绑定 DM 而非群聊。DM binding 需手动添加到 `openclaw.json`。
+> 💡 有 `examples/` 模板的 preset 会自动复制完整的 SOUL.md、AGENTS.md 等文件，开箱即用。
 
 ### 手动创建（备选）
 
@@ -85,11 +113,11 @@ openclaw gateway restart
 
 | 预设 | 工具权限 | 场景 |
 |------|---------|------|
+| momo | exec, read, write, sessions_*, feishu_doc, tts | 私人助手（DM 入口） |
+| orchestrator | 全部（含 gateway, sessions_spawn） | 研发流协调者 |
 | coder | exec, read, write, edit, browser, sessions_*, feishu_doc | 研发主驱动（8 Phase） |
 | arch-alpha | read, web_search（只读） | 技术方案架构师（守正） |
 | arch-beta | read, web_search（只读） | 技术方案挑战者（破局） |
-| writer | read, web_search, feishu_doc | 文案、报告 |
-| analyst | exec, read, write, feishu_doc | 数据分析 |
 
 所有预设自动包含：`message`, `web_fetch`, `session_status`。
 

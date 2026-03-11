@@ -58,7 +58,7 @@ description: Delegate tasks to agents asynchronously. Triggers on "让XX做", "d
 | 编码/调试/重构/全流程研发 | coder |
 | 技术方案提案（守正） | arch-alpha |
 | 技术方案挑战（破局） | arch-beta |
-| Gateway/配置 | main（自己做） |
+| Gateway/配置 | orchestrator（自己做） |
 
 ## 禁止事项
 

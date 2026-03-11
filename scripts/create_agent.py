@@ -25,7 +25,7 @@
   --user-open-id  用户的飞书 open_id（拉入群聊用）
   --model         模型 ID（默认用配置中的 defaults）
   --workspace-base  workspace 基础目录（默认 ~/.openclaw）
-  --preset        预设角色（coder/arch-alpha/arch-beta/writer/analyst）
+  --preset        预设角色（momo/orchestrator/coder/arch-alpha/arch-beta）
                   有 examples/ 模板的 preset（如 coder）会优先复制完整模板文件
   --tools         逗号分隔的工具列表（覆盖 preset）
   --skip-chat     跳过创建飞书群聊
@@ -46,17 +46,31 @@ from pathlib import Path
 # examples/ 目录中有完整模板的 preset，脚本会优先复制模板文件
 # 没有模板的 preset 使用下面的配置自动生成
 PRESETS = {
-    "main": {
+    "momo": {
+        "tools": ["exec", "read", "write", "edit", "message",
+                  "web_search", "web_fetch", "session_status", "cron", "browser",
+                  "sessions_list", "sessions_history", "sessions_send",
+                  "feishu_doc", "feishu_perm", "tts"],
+        "template": "momo-agent",  # 指向 examples/momo-agent/
+        "soul_core": "你是用户的私人 AI 助手。日常对话、信息查询、轻量任务由你直接完成；研发类任务委派给 orchestrator。",
+        "soul_principles": [
+            "用户优先 — 快速响应，简洁有用",
+            "能自己做的不委派 — 查资料、聊天、轻量任务直接完成",
+            "研发任务交给 orchestrator — 涉及编码、方案设计、MR 的任务委派",
+            "三次失败就停，换方案或上报",
+        ],
+    },
+    "orchestrator": {
         "tools": ["exec", "read", "write", "edit", "message",
                   "web_search", "web_fetch", "session_status", "cron", "browser",
                   "gateway", "sessions_list", "sessions_history", "sessions_send",
-                  "sessions_spawn", "feishu_doc", "feishu_perm", "tts"],
-        "template": "momo-agent",  # 指向 examples/momo-agent/
-        "soul_core": "你是多 Agent 系统的协调者。你的核心价值是决策和协调，不是执行。",
+                  "sessions_spawn", "feishu_doc", "feishu_perm"],
+        "template": "orchestrator-agent",  # 指向 examples/orchestrator-agent/
+        "soul_core": "你是对抗式研发流的协调者。你的核心价值是任务拆解、派发和进度跟踪，不是执行。",
         "soul_principles": [
             "最大化委托，最小化亲力亲为",
             "绝不代替子 Agent 执行任务",
-            "先动手再提问，用结果说话",
+            "异步派发，立刻响应，心跳跟进",
             "三次失败就停，换方案或上报",
         ],
     },
@@ -94,41 +108,6 @@ PRESETS = {
             "挑战假设，质疑理所当然的选择",
             "质疑有依据，每个 rebuttal 点有具体技术论据",
             "目标是收敛到最优解，可以妥协和承认对方优势",
-        ],
-    },
-    "writer": {
-        "tools": ["read", "message", "web_search", "web_fetch",
-                  "session_status", "feishu_doc", "feishu_perm"],
-        "soul_core": "你是一位资深内容创作者，擅长各类文案、报告、文章写作。你的职责是产出高质量的文字内容。",
-        "soul_principles": [
-            "结论先行，重要信息放前面",
-            "适配目标读者的阅读水平",
-            "数据支撑观点，不空谈",
-            "格式清晰，善用标题和列表",
-        ],
-    },
-    "analyst": {
-        "tools": ["exec", "read", "write", "message", "web_search",
-                  "web_fetch", "session_status", "feishu_doc", "feishu_perm"],
-        "soul_core": "你是一位资深数据分析师，擅长数据处理、可视化和洞察提炼。你的职责是用数据驱动决策。",
-        "soul_principles": [
-            "数据说话，结论有据可依",
-            "分析前先明确问题和假设",
-            "注意数据质量和偏差",
-            "可视化呈现，让数据易懂",
-        ],
-    },
-    "open-source": {
-        "tools": ["exec", "read", "write", "edit", "message",
-                  "web_search", "web_fetch", "session_status",
-                  "sessions_send", "sessions_list", "sessions_history"],
-        "template": "open-source-agent",
-        "soul_core": "你是一位开源项目维护助手。熟悉 Git 工作流、代码审查流程、项目规范制定。核心信条：每一行代码改动都必须经过脱敏审查。",
-        "soul_principles": [
-            "脱敏优先 — 任何开源项目改动，第一优先级是检查敏感信息",
-            "规范至上 — 严格遵循项目维护规范，不自行其是",
-            "审查每一处 — 每次提交前必须执行脱敏检查",
-            "最小改动 — 只改必要的，不引入无关变更",
         ],
     },
 }
