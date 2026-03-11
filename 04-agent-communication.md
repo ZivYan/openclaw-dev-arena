@@ -16,12 +16,12 @@ agent:{agent_id}:{channel}:{peer_kind}:{peer_id}
 
 示例：
 - `agent:coder:feishu:group:oc_xxx` — coder 的飞书群聊 session
-- `agent:main:feishu:dm:ou_xxx` — main 的私信 session
+- `agent:momo:feishu:dm:ou_xxx` — momo 的私信 session
 
 ## 异步委派（推荐模式）
 
 ```
-用户 → main: "帮我写个脚本"
+用户 → momo: "帮我写个脚本"
   │
   ├─ 拆解任务 brief
   ├─ sessions_send → coder（10-30s 超时）
@@ -44,7 +44,8 @@ agent:{agent_id}:{channel}:{peer_kind}:{peer_id}
 
 | Agent | 通信 | 理由 |
 |-------|------|------|
-| momo | ✅ | 协调调度 |
+| momo | ✅ | 委派研发任务给 orchestrator |
+| orchestrator | ✅ | 研发流协调调度 |
 | coder | ✅ | 驱动 arch-alpha/beta 对抗式方案设计 |
 | arch-alpha/beta | ❌ | 被动响应，由 coder 驱动 |
 

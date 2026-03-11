@@ -7,11 +7,12 @@
 ```
 飞书 Bot (一个应用)
     │
-    ├── 群聊「开发」  → Agent: coder      (研发主驱动)
-    ├── 群聊「方案A」 → Agent: arch-alpha (技术方案/守正)
-    ├── 群聊「方案B」 → Agent: arch-beta  (技术方案/破局)
+    ├── 群聊「协调」  → Agent: orchestrator (研发流协调者)
+    ├── 群聊「开发」  → Agent: coder        (研发主驱动)
+    ├── 群聊「方案A」 → Agent: arch-alpha   (技术方案/守正)
+    ├── 群聊「方案B」 → Agent: arch-beta    (技术方案/破局)
     │
-    ├── DM 用户 A → Agent: main   (主助手)
+    ├── DM 用户 A → Agent: momo   (私人助手)
     └── DM 用户 B → Agent: user-assistant  (用户B的专属助手)
 ```
 
@@ -52,7 +53,8 @@ coder ──sessions_send──► arch-alpha / arch-beta
 
 每个 Agent 可以配置独立的工具白名单/黑名单：
 
-- 协调者 Agent（如 MOMO）: 拥有所有权限（gateway、browser、cron...）
+- 私人助手（如 momo）: 日常服务 + 委派研发任务给 orchestrator
+- 协调者（如 orchestrator）: 拥有 gateway、sessions_spawn，负责研发流调度
 - 编码 Agent（如 coder）: exec、read、write、edit、sessions_*、feishu_doc
 - 方案 Agent（如 arch-alpha/beta）: read、web_search（只读）
 - 跨 Agent 通信: sessions_list、sessions_history、sessions_send
@@ -90,7 +92,8 @@ Agent 处理（读 SOUL.md → 调用工具 → 生成回复）
 
 | Agent | 职责 | 模型建议 | 工具权限 |
 |-------|------|---------|---------|
-| momo | 协调调度、系统管理 | 最强模型 | 全部 |
+| momo | 私人助手（DM 入口） | 通用模型 | exec, read, write, sessions_*, feishu_doc |
+| orchestrator | 研发流协调、系统管理 | 最强模型 | 全部（含 gateway、sessions_spawn） |
 | coder | 研发主驱动（8 Phase 全流程） | 代码能力强的模型 | exec, read, write, edit, sessions_*, feishu_doc |
 | arch-alpha | 技术方案架构师（守正） | 通用模型 | read, web_search（只读） |
 | arch-beta | 技术方案挑战者（破局） | 通用模型 | read, web_search（只读） |

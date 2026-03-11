@@ -76,8 +76,8 @@ print(f'✅ agents: {len(c[\"agents\"][\"list\"])} | bindings: {len(c[\"bindings
 不要给 Agent 不需要的权限：
 
 ```
-writer（写作型）: read, web_search, feishu_doc, message  ✅ 最小权限
-writer（写作型）: 全部权限                               ❌ 过度授权
+arch-alpha（方案型）: read, web_search, message  ✅ 最小权限
+arch-alpha（方案型）: 全部权限                    ❌ 过度授权
 ```
 
 ### 任务委派原则

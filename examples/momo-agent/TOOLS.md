@@ -1,4 +1,4 @@
-# TOOLS.md - MOMO (协调者 Agent)
+# TOOLS.md - MOMO (私人助手 Agent)
 
 > 部署后根据实际环境填写
 
@@ -11,31 +11,30 @@
 
 | Agent | 群聊 ID | 用途 |
 |-------|---------|------|
-| momo | — | 协调者 |
+| momo | — | 私人助手（DM 入口） |
+| orchestrator | `oc_你的群聊ID` | 研发流协调者 |
 | coder | `oc_你的群聊ID` | 开发助手 |
-| writer | `oc_你的群聊ID` | 写作助手 |
-| analyst | `oc_你的群聊ID` | 分析助手 |
 
 ## 工具权限矩阵
 
-| 工具 | momo | coder | writer | analyst |
-|------|------|-------|--------|---------|
-| exec | ✅ | ✅ | ❌ | ✅ |
-| read/write/edit | ✅ | ✅ | ❌ | ✅ |
+| 工具 | momo | orchestrator | coder | arch-* |
+|------|------|-------------|-------|--------|
+| exec | ✅ | ✅ | ✅ | ❌ |
+| read/write/edit | ✅ | ✅ | ✅ | read |
 | message | ✅ | ✅ | ✅ | ✅ |
 | web_search | ✅ | ✅ | ✅ | ✅ |
-| feishu_doc | ✅ | ✅ | ✅ | ✅ |
-| browser | ✅ | ✅ | ❌ | ❌ |
-| sessions_* | ✅ | ❌ | ❌ | ❌ |
-| gateway | ✅ | ❌ | ❌ | ❌ |
+| feishu_doc | ✅ | ✅ | ✅ | ❌ |
+| browser | ✅ | ✅ | ✅ | ❌ |
+| sessions_* | ✅ | ✅ | ✅ | ❌ |
+| gateway | ❌ | ✅ | ❌ | ❌ |
 
-> 设计原则：gateway/sessions 仅 main 可用；coder 专注编码；writer 专注写作
+> 设计原则：gateway 仅 orchestrator 可用；momo 专注用户服务；coder 专注编码
 
 ## 定时任务
 
 | 任务 | Agent | 时间 | 说明 |
 |------|-------|------|------|
-| 心跳 | momo | 每 30min | 批量检查 |
+| 心跳 | momo | 每 30min | 检查委派任务进度 |
 | 示例 cron | — | — | 按需添加 |
 
 ---

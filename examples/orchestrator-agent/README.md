@@ -1,40 +1,36 @@
-# MOMO - 私人助手 Agent
+# Orchestrator - 研发协调者 Agent
 
-用户的**私人 AI 助手**。MOMO 处理日常对话、信息查询、轻量任务；研发类任务委派给 orchestrator。
-
-系统中可以有多个 MOMO 实例（peer 关系），各自绑定不同用户或场景。
+对抗式研发流的**协调者**。Orchestrator 不执行具体任务，而是将任务分发给专业子 Agent 并跟进结果。
 
 ## 核心职责
 
-- **日常服务** — 回答问题、查资料、轻量文件操作
-- **任务路由** — 研发类任务委派给 orchestrator
-- **进度跟进** — 心跳时检查委派任务的进度
+- **任务调度** — 理解需求，拆解并派发给 coder
+- **进度跟进** — 通过心跳和 sessions_history 监控子 Agent 状态
+- **系统运维** — 管理 Gateway 配置、cron 任务、Agent 健康度
 - **记忆维护** — 记录决策和经验，维护长期记忆
 
 ## 快速部署
 
 ```bash
 # 1. 复制到 workspace
-cp -r examples/momo-agent ~/.openclaw/workspace-momo
+cp -r examples/orchestrator-agent ~/.openclaw/workspace-orchestrator
 
 # 2. 创建记忆目录
-mkdir -p ~/.openclaw/workspace-momo/memory
+mkdir -p ~/.openclaw/workspace-orchestrator/memory
 
 # 3. 编辑 TOOLS.md — 填入实际的 Agent 列表和群聊 ID
-# 4. 编辑 USER.md — 填入用户信息
 
-# 5. 在 openclaw.json 中添加 agent 配置
-# 6. 重启 Gateway
+# 4. 在 openclaw.json 中添加 agent 配置
+# 5. 重启 Gateway
 ```
 
 ## 文件说明
 
 | 文件 | 用途 | 部署时修改 |
 |------|------|-----------|
-| SOUL.md | 助手原则、任务分工、安全边界 | 按需调整 |
+| SOUL.md | 协调原则、任务下发规则、安全边界 | 按需调整 |
 | AGENTS.md | 记忆规范、安全规则、Git 规范 | 按需调整 |
 | TOOLS.md | Agent 列表、权限矩阵、定时任务 | **必须填写** |
-| USER.md | 用户偏好 | **必须填写** |
 | HEARTBEAT.md | 心跳检查项 | 按需调整 |
 | IDENTITY.md | 身份标识 | 可选修改 |
 
@@ -49,18 +45,17 @@ mkdir -p ~/.openclaw/workspace-momo/memory
 
 ```json
 {
-  "id": "momo",
-  "name": "MOMO",
-  "default": true,
-  "workspace": "~/.openclaw/workspace-momo",
+  "id": "orchestrator",
+  "name": "Orchestrator",
+  "workspace": "~/.openclaw/workspace-orchestrator",
   "heartbeat": { "every": "30m", "target": "last" },
   "tools": {
     "allow": [
       "exec", "read", "write", "edit",
       "message", "web_search", "web_fetch", "session_status",
-      "cron", "browser",
-      "sessions_list", "sessions_history", "sessions_send",
-      "feishu_doc", "feishu_perm", "tts"
+      "cron", "browser", "gateway",
+      "sessions_list", "sessions_history", "sessions_send", "sessions_spawn",
+      "feishu_doc", "feishu_perm"
     ]
   }
 }
@@ -76,6 +71,7 @@ mkdir -p ~/.openclaw/workspace-momo/memory
                                                    (对抗式方案设计)
 ```
 
-- MOMO 是用户的默认入口（DM 绑定）
-- 研发类任务委派给 orchestrator，orchestrator 再协调 coder/arch-*
-- MOMO 不直接参与研发流程
+- Orchestrator 是研发流程的中枢，负责跨 Agent 协调
+- 编码任务派发给 coder，coder 再驱动 arch-alpha/beta 对抗式方案设计
+- Orchestrator 只协调，不执行具体任务
+- 子 Agent 失败 → Orchestrator 优化提示词重新派发，**不接手**

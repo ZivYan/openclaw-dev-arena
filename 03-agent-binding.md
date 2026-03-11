@@ -22,9 +22,9 @@ OpenClaw 通过 `bindings` 配置将飞书的群聊/私信路由到不同的 Age
     },
     "list": [
       {
-        "id": "main",
+        "id": "momo",
         "default": true,
-        "workspace": "/home/user/.openclaw/workspace",
+        "workspace": "/home/user/.openclaw/workspace-momo",
         "model": {
           "primary": "your-model-id",
           "fallbacks": ["fallback-model-id"]
@@ -68,7 +68,7 @@ OpenClaw 通过 `bindings` 配置将飞书的群聊/私信路由到不同的 Age
       }
     },
     {
-      "agentId": "main",
+      "agentId": "momo",
       "match": {
         "channel": "feishu",
         "accountId": "default",
@@ -88,7 +88,7 @@ OpenClaw 通过 `bindings` 配置将飞书的群聊/私信路由到不同的 Age
 
 ```json
 {
-  "agentId": "writer",
+  "agentId": "orchestrator",
   "match": {
     "channel": "feishu",
     "accountId": "default",
@@ -103,7 +103,7 @@ OpenClaw 通过 `bindings` 配置将飞书的群聊/私信路由到不同的 Age
 
 ```json
 {
-  "agentId": "main",
+  "agentId": "momo",
   "match": {
     "channel": "feishu",
     "accountId": "default",
@@ -122,10 +122,11 @@ OpenClaw 通过 `bindings` 配置将飞书的群聊/私信路由到不同的 Age
 
 ```
 ~/.openclaw/
-├── workspace-momo/       # 协调者 agent (MOMO)
-├── workspace-coder/      # coder agent（研发主驱动）
-├── workspace-arch-alpha/ # arch-alpha（技术方案/守正）
-└── workspace-arch-beta/  # arch-beta（技术方案/破局）
+├── workspace-momo/         # 私人助手 (MOMO)
+├── workspace-orchestrator/ # 研发流协调者
+├── workspace-coder/        # coder agent（研发主驱动）
+├── workspace-arch-alpha/   # arch-alpha（技术方案/守正）
+└── workspace-arch-beta/    # arch-beta（技术方案/破局）
 ```
 
 Workspace 中的关键文件：

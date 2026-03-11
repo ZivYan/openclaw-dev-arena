@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**openclaw-dev-arena** is an open-source adversarial development workflow template built on the OpenClaw framework. It provides configuration templates, utility scripts, AI-optimized documentation, and preset Agent personas (coder + arch-alpha + arch-beta) for deploying multi-agent AI systems on Feishu (Lark).
+**openclaw-dev-arena** is an open-source adversarial development workflow template built on the OpenClaw framework. It provides configuration templates, utility scripts, AI-optimized documentation, and preset Agent personas (momo + orchestrator + coder + arch-alpha + arch-beta) for deploying multi-agent AI systems on Feishu (Lark).
 
 Core concept: One Feishu Bot → multiple independent AI Agents, each bound to a dedicated group chat with isolated context, tools, and permissions.
 
@@ -15,21 +15,16 @@ Feishu Bot (1 app) ──WebSocket──▶ OpenClaw Gateway
                                       │
                           Binding Rules (channel + peer → Agent)
                                       │
-                    ┌─────────┬───────┴───────┬──────────┐
-                  Agent A   Agent B        Agent C      Agent D
-                  (momo)    (coder)       (arch-alpha) (arch-beta)
-                    │          │              │          │
-                Workspace  Workspace      Workspace  Workspace
-                ├─ SOUL.md  ├─ SOUL.md    ...        ...
-                ├─ IDENTITY.md
-                ├─ TOOLS.md
-                ├─ memory/
-                └─ skills/
+          ┌──────────┬─────────┬──┴──────┬──────────┬──────────┐
+        Agent A    Agent B   Agent C   Agent D    Agent E
+        (momo)  (orchestrator) (coder) (arch-alpha) (arch-beta)
+
+  momo (DM入口/私人助手) ──委派──▶ orchestrator (研发协调) ──派发──▶ coder/arch-*
 ```
 
 - **Binding**: Routes a chat/DM to an Agent via `[channel + peer_id]` mapping
 - **Session**: Each Agent + chat combo = independent session (`agent:{id}:{channel}:{peer_kind}:{peer_id}`)
-- **Cross-agent comms**: Coordinator uses `sessions_send(sessionKey, message)` to delegate tasks
+- **Cross-agent comms**: Orchestrator uses `sessions_send(sessionKey, message)` to delegate tasks
 
 ## Key Files
 
@@ -41,7 +36,8 @@ Feishu Bot (1 app) ──WebSocket──▶ OpenClaw Gateway
 | `examples/PLACEHOLDERS.md` | All 24+ placeholder values and their sources |
 | `scripts/create_agent.py` | Auto-creates Agent workspace + Feishu group chat + updates config |
 | `examples/coder-agent/` | Full coder Agent template (SOUL.md, TOOLS.md, skills/) |
-| `examples/momo-agent/` | Coordinator Agent template |
+| `examples/momo-agent/` | Personal assistant Agent template |
+| `examples/orchestrator-agent/` | Dev workflow coordinator Agent template |
 | `skills/` | Shared skill modules (agent-comm, feishu-chat, feishu-doc-writer, config-update, etc.) |
 
 ## Common Commands
@@ -79,13 +75,11 @@ python3 skills/config-update/script/config_edit.py --validate
 ## Preset System
 
 Presets define both tool permissions AND hand-crafted SOUL.md content:
-- `momo` — Coordinator: delegates tasks, never executes directly. Has all tools.
+- `momo` — Personal assistant: daily chat, info lookup, lightweight tasks. Delegates dev tasks to orchestrator.
+- `orchestrator` — Dev workflow coordinator: task decomposition, dispatch to coder/arch-*, progress tracking. Has gateway + sessions_spawn.
 - `coder` — Dev workflow driver (8 Phase): requirement → adversarial design → implement → test → MR → delivery. Tools: exec, read, write, edit, browser, sessions_*, feishu_doc
 - `arch-alpha` — Architecture proposer (守正): generates stable, proven technical proposals. Tools: read, web_search (read-only)
 - `arch-beta` — Architecture challenger (破局): generates alternative proposals + rebuttals. Tools: read, web_search (read-only)
-- `writer` — Content creation. Tools: read, web_search, feishu_doc, feishu_perm
-- `analyst` — Data analysis. Tools: exec, read, write, web_search, feishu_doc, feishu_perm
-- `open-source` — Open-source project maintenance. Tools: exec, read, write, edit, sessions_*
 
 ## Dev Workflow (coder preset)
 

@@ -52,7 +52,8 @@ openclaw-dev-arena/
 │   ├── coder-agent/              # 研发主驱动 Agent 模板（8 Phase 全流程）
 │   ├── arch-alpha-agent/         # 技术方案架构师模板（守正）
 │   ├── arch-beta-agent/          # 技术方案挑战者模板（破局）
-│   ├── momo-agent/               # 协调者 Agent 模板
+│   ├── momo-agent/               # 私人助手 Agent 模板
+│   ├── orchestrator-agent/       # 研发流协调者 Agent 模板
 │   ├── openclaw-config.json      # 示例配置（脱敏）
 │   ├── agent-soul-template.md    # Agent SOUL.md 模板
 │   └── agent-identity-template.md # Agent IDENTITY.md 模板
